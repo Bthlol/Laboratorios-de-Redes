@@ -41,20 +41,18 @@ func (s *Server) ListenAndServe() error {
 		fields := strings.SplitN(msg, " ", 2)
 		if len(fields) == 2 && fields[0] == "HEARTBEAT" {
 			token := fields[1]
-			// TODO(B): s.Sessions.TocarHeartbeat(token)
+			s.Sessions.TocarHeartbeat(fields[1])
 			_ = token
 		}
 	}
 }
 
-// watchdog revisa cada cierto intervalo (p.ej. 5s) todas las sesiones activas.
+// watchdog revisa periódicamente las sesiones y revoca las que vencieron.
+// Las reglas viven en session.Manager, que es quien tiene el mutex del mapa.
 func (s *Server) watchdog() {
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 	for range ticker.C {
-		// TODO(B): recorrer s.Sessions (con Lock/Unlock):
-		//   - !PrimerLatido && now-CreadaEn > 30s        -> Expirar
-		//   - PrimerLatido && now-UltimoHeartbeat > 60s  -> Expirar
-		//   - now-CreadaEn > 10min                        -> Expirar (TTL absoluto)
+		s.Sessions.ExpirarVencidas()
 	}
 }

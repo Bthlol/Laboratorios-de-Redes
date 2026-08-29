@@ -4,8 +4,8 @@
 | Nombre completo | Rol USM |
 | --- | --- |
 | Benjamín Torres | 202373539-6 |
-| Sebastián Santander | ... |
-| Bárbara Camilo | ... |
+| Sebastián Santander | 202373608-2 |
+| Bárbara Camilo | 202304567-5 |
 
 ## Distribución de lenguajes (Grupo 14, número par)
 - Servidor: **Go 1.20+** (`server-go/`)
