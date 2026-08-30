@@ -21,18 +21,20 @@ def register(host: str, port: int, username: str, password: str) -> int:
         f"\r\n"
         f"{body}"
     )
+    try:
+        with socket.create_connection((host, port)) as sock:
+            sock.sendall(request.encode("utf-8"))
+            response = b""
+            while True:
+                chunk = sock.recv(4096)
+                if not chunk:
+                    break
+                response += chunk
 
-    with socket.create_connection((host, port)) as sock:
-        sock.sendall(request.encode("utf-8"))
-        response = b""
-        while True:
-            chunk = sock.recv(4096)
-            if not chunk:
-                break
-            response += chunk
+    except (ConnectionRefusedError, socket.timeout) as e:
+        print(f"[HTTP] No se pudo conectar al servidor: {e}")
+        return -1
 
-    # TODO(Barbie): parsear la línea de estado "HTTP/1.1 <code> ..."
-    # y devolver el código como int. También manejar timeouts/errores de conexión.
     status_line = response.split(b"\r\n", 1)[0].decode(errors="replace")
     print(f"[HTTP] {status_line}")
     try:
@@ -44,13 +46,22 @@ def register(host: str, port: int, username: str, password: str) -> int:
 def get_history(host: str, port: int) -> str:
     """GET /history construido a mano sobre socket TCP."""
     request = f"GET /history HTTP/1.1\r\nHost: {host}\r\nConnection: close\r\n\r\n"
-    with socket.create_connection((host, port)) as sock:
-        sock.sendall(request.encode("utf-8"))
-        response = b""
-        while True:
-            chunk = sock.recv(4096)
-            if not chunk:
-                break
-            response += chunk
-    # TODO(Barbie): separar headers del body y devolver solo el body
-    return response.decode(errors="replace")
+    try:
+        with socket.create_connection((host, port)) as sock:
+            sock.sendall(request.encode("utf-8"))
+            response = b""
+            while True:
+                chunk = sock.recv(4096)
+                if not chunk:
+                    break
+                response += chunk
+    except (ConnectionRefusedError, socket.timeout) as e:
+        print(f"[HTTP] No se pudo conectar al servidor: {e}")
+        return ""
+
+    if b"\r\n\r\n" in response:
+        headers, _, body = response.partition(b"\r\n\r\n")
+        return body.decode(errors="replace")
+    else: 
+        return response.decode(errors="replace")
+    

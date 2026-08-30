@@ -27,8 +27,11 @@ class HeartbeatSender:
     def _loop(self):
         while self._running:
             msg = f"HEARTBEAT {self.token}"
-            self._sock.sendto(msg.encode("utf-8"), (self.host, self.port))
-            # TODO(Barbie): manejar excepciones de red sin matar el hilo
+            try:
+                
+                self._sock.sendto(msg.encode("utf-8"), (self.host, self.port))
+            except OSError as e:
+                print(f"[UDP] Error al enviar heartbeat: {e}")
             time.sleep(self.interval)
 
     def stop(self):
