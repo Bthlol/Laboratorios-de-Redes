@@ -1,5 +1,5 @@
 """
-Cliente HTTP -- propiedad de Persona C.
+Cliente HTTP -- propiedad de Barbie.
 
 IMPORTANTE: el enunciado prohíbe usar clientes HTTP de alto nivel
 (urllib.request, requests, etc.) para el CLIENTE. Hay que construir
@@ -31,7 +31,7 @@ def register(host: str, port: int, username: str, password: str) -> int:
                 break
             response += chunk
 
-    # TODO(Persona C): parsear la línea de estado "HTTP/1.1 <code> ..."
+    # TODO(Barbie): parsear la línea de estado "HTTP/1.1 <code> ..."
     # y devolver el código como int. También manejar timeouts/errores de conexión.
     status_line = response.split(b"\r\n", 1)[0].decode(errors="replace")
     print(f"[HTTP] {status_line}")
@@ -52,5 +52,5 @@ def get_history(host: str, port: int) -> str:
             if not chunk:
                 break
             response += chunk
-    # TODO(Persona C): separar headers del body y devolver solo el body
+    # TODO(Barbie): separar headers del body y devolver solo el body
     return response.decode(errors="replace")

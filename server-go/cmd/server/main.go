@@ -1,10 +1,11 @@
 // Punto de entrada: levanta los tres servidores en paralelo.
-// Este archivo es el punto de integración entre Persona A (http+storage)
-// y Persona B (tcp+udp+session) -- edítenlo juntos al final, cuando cada
-// módulo ya compile por separado.
+// Integración final de Benja (http+storage) y Seba (tcp+udp+session).
+// Verificado end-to-end (HTTP register/history, TCP login/msg, UDP heartbeat,
+// casos de error) el 29-08-2026.
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"lab1-grupo14/server/internal/httpserver"
@@ -15,17 +16,32 @@ import (
 )
 
 func main() {
-	// TODO(A): inicializar UsuariosStore / HistorialStore reales
-	usuarios, err := storage.NewCSVStore("usuarios.csv", []string{"username", "password", "fecha_registro"})
+	usuarios, err := storage.NewUsuariosStore("usuarios.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	historial, err := storage.NewHistorialStore("historial.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sesionesStore, err := session.NewCSVSesiones("sesiones.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	sessions := session.NewManager()
+	sessions := session.NewManager(sesionesStore)
 
-	httpSrv := &httpserver.Server{Usuarios: usuarios, Addr: ":8080"}
-	tcpSrv := &tcpserver.Server{Addr: ":9000", Sessions: sessions}
-	udpSrv := &udpserver.Server{Addr: ":9001", Sessions: sessions}
+	const puertoUDP = 9001 // decisión de Seba: un solo puerto UDP para todas las sesiones
+
+	httpSrv := &httpserver.Server{Usuarios: usuarios, Historial: historial, Addr: ":8080"}
+	tcpSrv := &tcpserver.Server{
+		Addr:      ":9000",
+		Sessions:  sessions,
+		Usuarios:  usuarios,
+		Historial: historial,
+		PuertoUDP: puertoUDP,
+	}
+	udpSrv := &udpserver.Server{Addr: fmt.Sprintf(":%d", puertoUDP), Sessions: sessions}
 
 	go func() {
 		log.Println("HTTP escuchando en :8080")

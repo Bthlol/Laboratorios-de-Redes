@@ -1,5 +1,5 @@
 """
-Cliente integrado -- Componente 4, propiedad de Persona C.
+Cliente integrado -- Componente 4, propiedad de Barbie.
 
 Flujo:
   1. (Opcional) registrar usuario vía HTTP.

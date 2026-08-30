@@ -1,4 +1,4 @@
-// Paquete udpserver: propiedad de Persona B.
+// Paquete udpserver: propiedad de Seba.
 //
 // Componente 3: recibe HEARTBEAT <token> y corre el watchdog que revisa
 // periódicamente sesiones.csv / el mapa en memoria para expirar tokens

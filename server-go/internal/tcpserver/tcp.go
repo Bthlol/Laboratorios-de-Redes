@@ -1,8 +1,8 @@
-// Paquete tcpserver: propiedad de Persona B (Seba).
+// Paquete tcpserver: propiedad de Seba.
 //
 // Componente 2: LOGIN, MSG/broadcast. Cada conexión corre en su propia
 // goroutine (concurrencia nativa de Go). El estado compartido vive en session.Manager; la
-// persistencia en CSV se consume a través de las interfaces de abajo (de Persona A) para persistir.
+// persistencia en CSV se consume a través de las interfaces de abajo (de Benja) para persistir.
 package tcpserver
 
 import (

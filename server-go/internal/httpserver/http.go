@@ -1,4 +1,4 @@
-// Paquete httpserver: propiedad de Persona A.
+// Paquete httpserver: propiedad de Benja.
 //
 // Implementa el Componente 1 (Servicio HTTP de Registro) usando el
 // paquete estándar net/http (permitido para el SERVIDOR; el cliente
@@ -7,14 +7,16 @@ package httpserver
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"lab1-grupo14/server/internal/storage"
 )
 
 type Server struct {
-	Usuarios *storage.CSVStore // TODO(A): reemplazar por tu UsuariosStore
-	Addr     string
+	Usuarios  *storage.UsuariosStore
+	Historial *storage.HistorialStore
+	Addr      string
 }
 
 type registerRequest struct {
@@ -33,14 +35,15 @@ func (s *Server) handleRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO(Persona A):
-	//   1. if s.Usuarios.UserExists(req.Username) -> w.WriteHeader(http.StatusConflict) // 409
-	//   2. si no existe -> s.Usuarios.RegisterUser(req.Username, req.Password)
-	//      -> w.WriteHeader(http.StatusCreated) // 201
-	//   Recordar: username,password,fecha_registro en usuarios.csv
-	_ = req
-
-	w.WriteHeader(http.StatusNotImplemented)
+	err := s.Usuarios.RegisterUser(req.Username, req.Password)
+	switch {
+	case errors.Is(err, storage.ErrUsuarioExistente):
+		w.WriteHeader(http.StatusConflict) // 409
+	case err != nil:
+		w.WriteHeader(http.StatusInternalServerError)
+	default:
+		w.WriteHeader(http.StatusCreated) // 201
+	}
 }
 
 func (s *Server) handleHistory(w http.ResponseWriter, r *http.Request) {
@@ -48,8 +51,13 @@ func (s *Server) handleHistory(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	// TODO(Persona A): leer historial.csv y devolverlo (texto plano o JSON)
-	w.WriteHeader(http.StatusNotImplemented)
+	texto, err := s.Historial.LeerComoTexto()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Write([]byte(texto))
 }
 
 func (s *Server) ListenAndServe() error {

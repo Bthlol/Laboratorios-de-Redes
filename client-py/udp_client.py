@@ -1,5 +1,5 @@
 """
-Cliente UDP -- propiedad de Persona C.
+Cliente UDP -- propiedad de Barbie.
 
 Hilo en segundo plano que envía HEARTBEAT <token> cada 3 segundos,
 de forma ininterrumpida, mientras la sesión esté activa.
@@ -28,7 +28,7 @@ class HeartbeatSender:
         while self._running:
             msg = f"HEARTBEAT {self.token}"
             self._sock.sendto(msg.encode("utf-8"), (self.host, self.port))
-            # TODO(Persona C): manejar excepciones de red sin matar el hilo
+            # TODO(Barbie): manejar excepciones de red sin matar el hilo
             time.sleep(self.interval)
 
     def stop(self):
