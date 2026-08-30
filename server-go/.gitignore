@@ -1,0 +1,8 @@
+# Datos generados en tiempo de ejecución (no son código fuente):
+# se crean solos la primera vez que corre el servidor.
+usuarios.csv
+sesiones.csv
+historial.csv
+
+# Binario compilado, si alguien hace `go build -o servidor ./cmd/server`
+/servidor
