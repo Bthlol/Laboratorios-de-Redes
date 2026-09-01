@@ -17,6 +17,7 @@ class TCPClient:
         self.udp_port: int | None = None
         self._recv_thread: threading.Thread | None = None
         self._running = False
+        self._buffer = b""
 
     def connect(self):
         self.sock = socket.create_connection((self.host, self.port))
@@ -25,16 +26,20 @@ class TCPClient:
         self.sock.sendall((line + "\n").encode("utf-8"))
 
     def _read_line(self) -> str:
-        # TODO(Barbie): implementar lectura por línea (buffer + split en \n),
-        # igual que hace bufio.Scanner en Go. recv() puede entregar
-        # fragmentos parciales o varias líneas juntas.
-        data = self.sock.recv(4096)
-        return data.decode("utf-8", errors="replace").strip()
+
+        while b"\n" not in self._buffer:
+            data = self.sock.recv(4096)
+            if not data:
+                raise OSError("El servidor cerró la conexión")
+            self._buffer += data
+
+        line, _, self._buffer = self._buffer.partition(b"\n")
+        return line.decode("utf-8", errors="replace").strip()
+
 
     def login(self, username: str, password: str) -> bool:
         self._send_line(f"LOGIN {username} {password}")
         response = self._read_line()
-        # TODO(Barbie): parsear "OK <token> <puerto_udp>" o "ERROR INVALID CREDENTIALS"
         parts = response.split(" ")
         if parts[0] == "OK":
             self.token = parts[1]
@@ -47,9 +52,7 @@ class TCPClient:
         if not self.token:
             raise RuntimeError("no hay sesión activa")
         self._send_line(f"MSG {self.token} {contenido}")
-        # TODO(Barbie): el ACK/ERROR de esta respuesta puede llegar entremezclado
-        # con INCOMING de otros usuarios -- por eso normalmente el ACK también
-        # se procesa en el hilo receptor, no acá con una lectura bloqueante directa.
+
 
     def start_receiver(self):
         """Lanza el hilo que escucha continuamente el socket TCP (no bloqueante)."""
@@ -65,9 +68,18 @@ class TCPClient:
                 break
             if not line:
                 continue
-            # TODO(Barbie): distinguir "INCOMING <user> <msg>", "ACK",
-            # "ERROR ..." y mostrarlos por consola de forma clara.
-            print(f"\n[SERVER] {line}")
+
+            partes = line.split(" ", 2)
+
+            if partes[0] == "INCOMING" and len(partes) >= 3:
+                user, msg = partes[1], partes[2]
+                print(f"\n[INCOMING] {user}: {msg}")
+            elif partes[0] == "ACK":
+                print(f"\n[TCP] Mensaje enviado (ACK recibido)")
+            elif partes[0] == "ERROR":
+                print(f"\n[TCP] Error del servidor: {line}")
+            else:
+                print(f"\n[SERVER] {line}")
 
     def stop(self):
         self._running = False
