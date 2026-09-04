@@ -85,7 +85,7 @@ func (s *CSVSesiones) actualizar(token string, columna int, valor string) error 
 			return s.escribir(filas)
 		}
 	}
-	return nil // el token no está en el archivo: no hay nada que actualizar
+	return nil
 }
 
 func (s *CSVSesiones) leer() ([][]string, error) {

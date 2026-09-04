@@ -1,6 +1,4 @@
-// Paquete session: propiedad de Persona B(Seba).
-//
-// Este es el ESTADO COMPARTIDO entre el servidor TCP y el servidor UDP:
+// Paquete session mantiene el ESTADO COMPARTIDO entre el servidor TCP y el servidor UDP:
 // mapa de token -> sesión, con su socket TCP asociado y timestamps de
 // heartbeat. Por eso vive en un paquete propio con su propio mutex,
 // y tanto tcpserver como udpserver solo lo consumen a través de estos
@@ -15,11 +13,10 @@ import (
 	"time"
 )
 
-// Plazos definidos por el enunciado.
 const (
-	TTLToken         = 10 * time.Minute // vida máxima del token
-	TimePrimerLatido = 30 * time.Second // plazo para el primer HEARTBEAT
-	TimeoutHeartbeat = 60 * time.Second // sin latidos después del primero
+	TTLToken         = 10 * time.Minute
+	TimePrimerLatido = 30 * time.Second
+	TimeoutHeartbeat = 60 * time.Second
 )
 
 // Errores que tcpserver traduce a las respuestas del protocolo.
@@ -55,11 +52,11 @@ type SesionesStore interface {
 
 type Manager struct {
 	mu       sync.Mutex
-	sesiones map[string]*Sesion  // token -> sesión
-	porConn  map[net.Conn]string // socket -> token, para el logout implícito
+	sesiones map[string]*Sesion
+	porConn  map[net.Conn]string
 	store    SesionesStore
-	ahora    func() time.Time // inyectable: en los tests avanzamos el reloj a voluntad
-	seq      uint64           // evita que dos tokens del mismo instante choquen
+	ahora    func() time.Time
+	seq      uint64
 }
 
 func NewManager(store SesionesStore) *Manager {

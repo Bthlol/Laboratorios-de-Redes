@@ -1,8 +1,8 @@
-// Paquete udpserver: propiedad de Seba.
-//
-// Componente 3: recibe HEARTBEAT <token> y corre el watchdog que revisa
-// periódicamente sesiones.csv / el mapa en memoria para expirar tokens
-// (30s sin primer latido, 60s sin heartbeat, 10min TTL absoluto).
+// Paquete udpserver recibe los latidos HEARTBEAT <token> y ejecuta el
+// watchdog que revisa periódicamente el mapa de sesiones en memoria para
+// expirar los tokens vencidos (30s sin primer latido, 60s sin heartbeat,
+// 10min de TTL absoluto). A diferencia de TCP, UDP no maneja conexiones:
+// un único socket recibe los datagramas de todos los clientes.
 package udpserver
 
 import (
@@ -29,7 +29,7 @@ func (s *Server) ListenAndServe() error {
 	}
 	defer conn.Close()
 
-	go s.watchdog() // rutina en segundo plano, TODO(B) implementar abajo
+	go s.watchdog()
 
 	buf := make([]byte, 1024)
 	for {
@@ -40,9 +40,7 @@ func (s *Server) ListenAndServe() error {
 		msg := strings.TrimSpace(string(buf[:n]))
 		fields := strings.SplitN(msg, " ", 2)
 		if len(fields) == 2 && fields[0] == "HEARTBEAT" {
-			token := fields[1]
 			s.Sessions.TocarHeartbeat(fields[1])
-			_ = token
 		}
 	}
 }

@@ -4,10 +4,10 @@
 // modifican filas existentes), así que no necesita el patrón de
 // "leer todo -> pisar la fila -> reescribir todo completo" que usa
 // session.CSVSesiones. Aun así se mantiene en un tipo propio, con su
-// propio mutex, siguiendo el mismo criterio que Seba: cada CSV que se
-// modifica desde más de una goroutine vive en su propio archivo con
-// un único punto de bloqueo, para que nunca compitan dos mutex sobre
-// el mismo archivo.
+// propio mutex, siguiendo el mismo criterio aplicado en sesiones.csv:
+// cada CSV que se modifica desde más de una goroutine vive en su propio
+// archivo con un único punto de bloqueo, para que nunca compitan dos
+// mutex sobre el mismo archivo.
 package storage
 
 import (
@@ -18,7 +18,6 @@ import (
 	"time"
 )
 
-// Columnas de usuarios.csv, en el orden que exige el enunciado.
 const (
 	colUsername = iota
 	colPassword
@@ -27,7 +26,6 @@ const (
 
 var cabeceraUsuarios = []string{"username", "password", "fecha_registro"}
 
-// ErrUsuarioExistente se traduce en http.go a 409 Conflict.
 var ErrUsuarioExistente = errors.New("usuario ya registrado")
 
 type UsuariosStore struct {
@@ -83,8 +81,8 @@ func (s *UsuariosStore) UserExists(username string) bool {
 	return false
 }
 
-// ValidateCredentials satisface la interfaz tcpserver.Usuarios que
-// declaró Seba: ValidateCredentials(username, password string) bool.
+// ValidateCredentials satisface la interfaz tcpserver.Usuarios, consumida
+// por el servidor TCP al procesar el comando LOGIN.
 func (s *UsuariosStore) ValidateCredentials(username, password string) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()

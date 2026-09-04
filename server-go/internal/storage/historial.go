@@ -31,10 +31,10 @@ func NewHistorialStore(ruta string) (*HistorialStore, error) {
 	return s, nil
 }
 
-// AppendMensaje satisface la interfaz tcpserver.Historial que declaró
-// Seba: AppendMensaje(username, mensaje string) error. El timestamp se
-// genera acá adentro, en time.RFC3339 (mismo formato que sesiones.csv),
-// tal como pidió Seba para que los tres CSV queden consistentes.
+// AppendMensaje satisface la interfaz tcpserver.Historial, consumida por
+// el servidor TCP al procesar el comando MSG. El timestamp se genera acá
+// adentro, en time.RFC3339 (mismo formato usado en sesiones.csv), para
+// que los tres CSV queden consistentes entre sí.
 func (s *HistorialStore) AppendMensaje(username, mensaje string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()

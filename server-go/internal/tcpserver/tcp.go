@@ -1,8 +1,9 @@
-// Paquete tcpserver: propiedad de Seba.
-//
-// Componente 2: LOGIN, MSG/broadcast. Cada conexión corre en su propia
-// goroutine (concurrencia nativa de Go). El estado compartido vive en session.Manager; la
-// persistencia en CSV se consume a través de las interfaces de abajo (de Benja) para persistir.
+// Paquete tcpserver implementa el canal TCP del protocolo: LOGIN y MSG con
+// broadcast. Cada conexión corre en su propia goroutine, lo que permite
+// atender múltiples clientes en simultáneo sin bloquearse entre sí. El
+// estado compartido (sesiones activas) vive en session.Manager; la
+// persistencia en CSV se consume a través de las interfaces declaradas
+// abajo, para no depender directamente de la implementación concreta.
 package tcpserver
 
 import (
@@ -14,8 +15,6 @@ import (
 	"lab1-grupo14/server/internal/session"
 )
 
-// Usuarios e Historial son lo que este paquete necesita del storage de Benja.
-// Al declararlas acá, tcpserver compila y se prueba sin esperar su implementación.
 type Usuarios interface {
 	ValidateCredentials(username, password string) bool
 }
@@ -29,7 +28,7 @@ type Server struct {
 	Sessions  *session.Manager
 	Usuarios  Usuarios
 	Historial Historial
-	PuertoUDP int // el que se le informa al cliente en la respuesta del LOGIN
+	PuertoUDP int
 }
 
 func (s *Server) ListenAndServe() error {
@@ -49,11 +48,11 @@ func (s *Server) ListenAndServe() error {
 
 func (s *Server) handleConn(conn net.Conn) {
 	defer conn.Close()
-	defer s.Sessions.ExpirarPorConn(conn) // logout implícito al caerse el socket
+	defer s.Sessions.ExpirarPorConn(conn)
 
 	reader := bufio.NewReader(conn)
 	for {
-		linea, err := reader.ReadString('\n') // delimitador \n según el enunciado
+		linea, err := reader.ReadString('\n')
 		if err != nil {
 			return
 		}

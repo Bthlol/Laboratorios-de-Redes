@@ -1,5 +1,6 @@
 """
-Cliente integrado -- Componente 4, propiedad de Barbie.
+Cliente integrado: orquesta el registro HTTP, el login TCP, el hilo de
+heartbeat UDP y el hilo receptor de broadcasts.
 
 Flujo:
   1. (Opcional) registrar usuario vía HTTP.

@@ -1,7 +1,6 @@
-// Punto de entrada: levanta los tres servidores en paralelo.
-// Integración final de Benja (http+storage) y Seba (tcp+udp+session).
-// Verificado end-to-end (HTTP register/history, TCP login/msg, UDP heartbeat,
-// casos de error) el 29-08-2026.
+// Punto de entrada del servidor: instancia las tres capas de persistencia
+// (usuarios, historial y sesiones) y levanta los tres servicios de red
+// (HTTP, TCP y UDP) en paralelo, compartiendo el mismo session.Manager.
 package main
 
 import (
@@ -31,7 +30,7 @@ func main() {
 
 	sessions := session.NewManager(sesionesStore)
 
-	const puertoUDP = 9001 // decisión de Seba: un solo puerto UDP para todas las sesiones
+	const puertoUDP = 9001 // único puerto UDP, compartido por todas las sesiones
 
 	httpSrv := &httpserver.Server{Usuarios: usuarios, Historial: historial, Addr: ":8080"}
 	tcpSrv := &tcpserver.Server{

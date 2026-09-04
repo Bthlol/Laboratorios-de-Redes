@@ -1,8 +1,6 @@
 """
-Cliente UDP -- propiedad de Barbie.
-
-Hilo en segundo plano que envía HEARTBEAT <token> cada 3 segundos,
-de forma ininterrumpida, mientras la sesión esté activa.
+Cliente UDP: hilo en segundo plano que envía HEARTBEAT <token> cada 3
+segundos, de forma ininterrumpida, mientras la sesión esté activa.
 """
 import socket
 import threading
@@ -28,7 +26,6 @@ class HeartbeatSender:
         while self._running:
             msg = f"HEARTBEAT {self.token}"
             try:
-                
                 self._sock.sendto(msg.encode("utf-8"), (self.host, self.port))
             except OSError as e:
                 print(f"[UDP] Error al enviar heartbeat: {e}")

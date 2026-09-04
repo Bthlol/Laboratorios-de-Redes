@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// --- dobles de prueba -------------------------------------------------------
+// Dobles de Prueba
 
 // connFalsa reemplaza un socket real. Embebe net.Conn (que queda en nil) para
 // satisfacer la interfaz completa sin escribir sus 7 métodos: sólo redefinimos
@@ -58,7 +58,7 @@ func crearSesion(t *testing.T, m *Manager) (*Sesion, *connFalsa) {
 	return ses, conn
 }
 
-// --- las tres reglas de expiración ------------------------------------------
+// Reglas de expiración
 
 func TestExpiraSiNoLlegaElPrimerLatido(t *testing.T) {
 	m, store, reloj := managerDePrueba(t)
@@ -114,7 +114,6 @@ func TestLatirCadaTresSegundosMantieneLaSesion(t *testing.T) {
 	m, _, reloj := managerDePrueba(t)
 	ses, _ := crearSesion(t, m)
 
-	// 100 latidos de 3s = 5 minutos, el ritmo real del cliente.
 	for i := 0; i < 100; i++ {
 		reloj.avanzar(3 * time.Second)
 		if err := m.TocarHeartbeat(ses.Token); err != nil {
@@ -132,14 +131,13 @@ func TestElTTLVenceAunqueElClienteSigaLatiendo(t *testing.T) {
 	m, _, reloj := managerDePrueba(t)
 	ses, _ := crearSesion(t, m)
 
-	// 200 latidos de 3s = 10 minutos exactos, siempre puntual.
 	for i := 0; i < 200; i++ {
 		reloj.avanzar(3 * time.Second)
 		if err := m.TocarHeartbeat(ses.Token); err != nil {
 			t.Fatalf("latido %d rechazado: %v", i, err)
 		}
 	}
-	reloj.avanzar(time.Second) // un segundo más y el TTL absoluto manda
+	reloj.avanzar(time.Second)
 	m.ExpirarVencidas()
 
 	if _, err := m.Validar(ses.Token); err != ErrSesionExpirada {
@@ -153,7 +151,7 @@ func TestElWatchdogNoRevocaDosVecesLaMismaSesion(t *testing.T) {
 
 	reloj.avanzar(TimePrimerLatido + time.Second)
 	m.ExpirarVencidas()
-	m.ExpirarVencidas() // el watchdog corre cada 5s
+	m.ExpirarVencidas()
 	m.ExpirarVencidas()
 
 	if len(store.expirados) != 1 {
@@ -161,7 +159,7 @@ func TestElWatchdogNoRevocaDosVecesLaMismaSesion(t *testing.T) {
 	}
 }
 
-// --- tokens -----------------------------------------------------------------
+// Tokens
 
 func TestValidarTokenInexistente(t *testing.T) {
 	m, _, _ := managerDePrueba(t)
@@ -172,7 +170,7 @@ func TestValidarTokenInexistente(t *testing.T) {
 }
 
 func TestTokensUnicosEnElMismoInstante(t *testing.T) {
-	m, _, _ := managerDePrueba(t) // reloj congelado: el peor caso posible
+	m, _, _ := managerDePrueba(t)
 	a, _ := crearSesion(t, m)
 	b, _ := crearSesion(t, m)
 
@@ -181,7 +179,7 @@ func TestTokensUnicosEnElMismoInstante(t *testing.T) {
 	}
 }
 
-// --- broadcast y logout implícito -------------------------------------------
+// Broadcast y Logout Implícito
 
 func TestBroadcastExcluyeAlRemitente(t *testing.T) {
 	m, _, _ := managerDePrueba(t)
@@ -207,7 +205,7 @@ func TestExpirarPorConnRevocaLaSesion(t *testing.T) {
 	m, store, _ := managerDePrueba(t)
 	ses, conn := crearSesion(t, m)
 
-	m.ExpirarPorConn(conn) // el cliente cerró el socket
+	m.ExpirarPorConn(conn)
 
 	if _, err := m.Validar(ses.Token); err != ErrSesionExpirada {
 		t.Errorf("Validar = %v, esperaba ErrSesionExpirada", err)

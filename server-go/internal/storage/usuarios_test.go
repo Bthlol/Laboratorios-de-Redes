@@ -47,7 +47,8 @@ func TestRegisterUserDuplicado(t *testing.T) {
 
 // TestRegisterUserConcurrente reproduce el escenario TOCTOU: dos
 // goroutines registrando el mismo username al mismo tiempo. Solo una
-// debe ganar. Correr con -race, igual que los tests de Seba.
+// debe ganar. Correr con -race para confirmar que no hay condiciones
+// de carrera en la sección crítica de RegisterUser.
 func TestRegisterUserConcurrente(t *testing.T) {
 	ruta := filepath.Join(t.TempDir(), "usuarios.csv")
 	store, err := NewUsuariosStore(ruta)

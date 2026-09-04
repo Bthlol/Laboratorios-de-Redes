@@ -1,8 +1,8 @@
-// Paquete httpserver: propiedad de Benja.
-//
-// Implementa el Componente 1 (Servicio HTTP de Registro) usando el
-// paquete estándar net/http (permitido para el SERVIDOR; el cliente
-// Python en cambio debe hablar HTTP crudo sobre sockets TCP).
+// Paquete httpserver implementa el Componente 1 del protocolo (registro de
+// usuarios e historial de mensajes) usando el paquete estándar net/http,
+// permitido para el servidor. El cliente, en cambio, construye las
+// peticiones HTTP a mano sobre un socket TCP crudo (ver
+// client-py/http_client.py), tal como exige el enunciado.
 package httpserver
 
 import (

@@ -1,8 +1,10 @@
 """
-Cliente TCP -- propiedad de Barbie.
+Cliente TCP: maneja el login, el envío de mensajes y la recepción de
+broadcasts entrantes.
 
-Debe ser totalmente concurrente: un hilo recibe broadcasts sin bloquear
-mientras el usuario escribe en la consola (eso se orquesta en main.py).
+Es totalmente concurrente: un hilo dedicado recibe mensajes del servidor
+sin bloquear la consola, mientras el hilo principal (orquestado desde
+main.py) queda libre para leer lo que el usuario escribe.
 """
 import socket
 import threading
@@ -26,7 +28,6 @@ class TCPClient:
         self.sock.sendall((line + "\n").encode("utf-8"))
 
     def _read_line(self) -> str:
-
         while b"\n" not in self._buffer:
             data = self.sock.recv(4096)
             if not data:
@@ -35,7 +36,6 @@ class TCPClient:
 
         line, _, self._buffer = self._buffer.partition(b"\n")
         return line.decode("utf-8", errors="replace").strip()
-
 
     def login(self, username: str, password: str) -> bool:
         self._send_line(f"LOGIN {username} {password}")
@@ -52,7 +52,6 @@ class TCPClient:
         if not self.token:
             raise RuntimeError("no hay sesión activa")
         self._send_line(f"MSG {self.token} {contenido}")
-
 
     def start_receiver(self):
         """Lanza el hilo que escucha continuamente el socket TCP (no bloqueante)."""
@@ -75,7 +74,7 @@ class TCPClient:
                 user, msg = partes[1], partes[2]
                 print(f"\n[INCOMING] {user}: {msg}")
             elif partes[0] == "ACK":
-                print(f"\n[TCP] Mensaje enviado (ACK recibido)")
+                print("\n[TCP] Mensaje enviado (ACK recibido)")
             elif partes[0] == "ERROR":
                 print(f"\n[TCP] Error del servidor: {line}")
             else:

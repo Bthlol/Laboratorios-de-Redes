@@ -47,20 +47,48 @@ python3 main.py
 
 Reglas de expiración: 30s sin primer latido, 60s sin heartbeat, 10min TTL absoluto de token.
 
+## Arquitectura
+
+El servidor mantiene tres servicios de red corriendo en paralelo, todos
+sobre el mismo estado de sesiones en memoria (`session.Manager`):
+
+- **HTTP** (`net/http`): registro de usuarios e historial de mensajes.
+  Solo depende de los CSV de usuarios e historial, es independiente del
+  resto.
+- **TCP**: login y mensajería. Cada conexión corre en su propia goroutine,
+  lo que permite atender múltiples clientes en simultáneo; la lectura usa
+  `bufio.Reader.ReadString('\n')` porque TCP es un flujo de bytes, no de
+  mensajes.
+- **UDP**: recepción de heartbeats. No maneja conexiones — un único socket
+  atiende los datagramas de todos los clientes — y corre en paralelo un
+  *watchdog* que expira las sesiones que llevan demasiado tiempo sin latir.
+
+El estado compartido (sesiones activas) vive protegido por un mutex en
+`session.Manager`, consumido tanto por el servidor TCP como por el UDP.
+La persistencia de cada CSV vive en su propio tipo con su propio mutex
+(`UsuariosStore`, `HistorialStore`, `CSVSesiones`), para que nunca compitan
+dos bloqueos sobre el mismo archivo.
+
+Del lado del cliente, `tcp_client.py` implementa el mismo manejo de buffer
+por línea que el servidor (a mano, ya que Python no trae un equivalente a
+`bufio` para sockets crudos) y separa la recepción de broadcasts en un
+hilo aparte para no bloquear la consola.
+
 ## Estructura de carpetas
 ```
 server-go/
-  cmd/server/main.go        # integración final (todos)
-  internal/storage/         # Benja: CSVStore con mutex
-  internal/httpserver/      # Benja: /register /history
-  internal/session/         # Seba: estado compartido TCP+UDP
-  internal/tcpserver/       # Seba: LOGIN / MSG / broadcast
-  internal/udpserver/       # Seba: heartbeat + watchdog
+  cmd/server/main.go        # arma y levanta los tres servicios (integración)
+  internal/storage/         # persistencia de usuarios.csv e historial.csv
+  internal/httpserver/      # servicio HTTP: /register y /history
+  internal/session/         # estado de sesiones compartido por TCP y UDP
+  internal/tcpserver/       # servicio TCP: LOGIN / MSG / broadcast
+  internal/udpserver/       # servicio UDP: heartbeat + watchdog
 client-py/
-  http_client.py            # Barbie: POST /register sobre socket TCP crudo
-  tcp_client.py              # Barbie: login + envío + hilo receptor
-  udp_client.py              # Barbie: hilo heartbeat
-  main.py                    # Barbie: orquesta todo + consola no bloqueante
+  http_client.py            # POST /register y GET /history sobre socket TCP crudo
+  tcp_client.py             # login, envío de mensajes e hilo receptor
+  udp_client.py             # hilo de heartbeat
+  main.py                   # orquesta todo lo anterior + consola no bloqueante
+  probar_token_vencido.py   # herramienta para validar el Punto 8 de los "Requisitos Mínimos"
 ```
 
 ## Video de demostración

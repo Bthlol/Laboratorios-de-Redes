@@ -1,9 +1,6 @@
 """
-Cliente HTTP -- propiedad de Barbie.
+Cliente HTTP construido sobre un socket TCP crudo.
 
-IMPORTANTE: el enunciado prohíbe usar clientes HTTP de alto nivel
-(urllib.request, requests, etc.) para el CLIENTE. Hay que construir
-la petición HTTP a mano y enviarla por un socket TCP crudo.
 """
 import json
 import socket
