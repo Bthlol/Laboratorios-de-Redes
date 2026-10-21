@@ -139,6 +139,8 @@ Cristóbal Brandau y Juan Cucurella. Estas cinco cosas cambian lo que se configu
 
 ## 5. Cómo trabajar con el repositorio
 
+El `README.md` resume la estructura de carpetas y los comandos.
+
 - Repositorio **privado**. Los `.pkt` no se versionan (`.gitignore`); van en una carpeta compartida aparte y solo Sebastián toca el maestro.
 - Cada uno edita solo sus archivos (routers, preguntas y conclusión), así no hay conflictos al mezclar. Hacer `git pull --rebase` antes de empezar.
 - **Completar interfaces:** abrir la topología en Packet Tracer y llenar cada `COMPLETAR` de `contrato/interfaces.json` con el nombre real de la interfaz. Conviene que cada uno llene solo sus routers.
