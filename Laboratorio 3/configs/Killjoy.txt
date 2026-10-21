@@ -1,0 +1,42 @@
+!============================================================
+! Router: Killjoy   AS 10   Responsable: Sebastián
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Killjoy
+!
+interface COMPLETAR
+ description Enlace con Cypher (3.0.0.0/8)
+ ip address 3.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Raze (4.0.0.0/8)
+ ip address 4.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Fade (6.0.0.0/8)
+ ip address 6.0.0.1 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description LAN de Killjoy (172.16.120.0/21)
+ ip address 172.16.120.1 255.255.248.0
+ no shutdown
+!
+router ospf 1
+ network 3.0.0.0 0.255.255.255 area 0
+ network 4.0.0.0 0.255.255.255 area 0
+ network 172.16.120.0 0.0.7.255 area 0
+ redistribute bgp 10 subnets
+!
+router bgp 10
+ neighbor 6.0.0.2 remote-as 20
+ redistribute ospf 1
+!
+end
+write memory

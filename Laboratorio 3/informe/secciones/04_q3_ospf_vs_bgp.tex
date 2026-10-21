@@ -1,0 +1,19 @@
+\subsection{Pregunta 3: comparativa de selección de rutas (OSPF vs.\ BGP)}
+\autor{Sebastián}
+
+\textbf{Qué debe quedar documentado:}
+\begin{itemize}[nosep]
+  \item Ruta exacta del paquete ICMP de Turret a Location server, con justificación de por qué los protocolos eligieron ese camino.
+  \item Métrica que usa OSPF dentro del AS 10 para elegir el router de salida, frente a la decisión de BGP con el atributo AS-Path.
+\end{itemize}
+
+\evid{Q3_ospf_vs_bgp/ping_turret_location.png}{Ping de Turret a Location server.}
+\evid{Q3_ospf_vs_bgp/tracert_turret_location.png}{Traza de Turret a Location server.}
+
+\subsubsection*{Ruta seguida}
+\pend{listar router por router}
+
+\subsubsection*{Por qué esa ruta}
+\pend{costo OSPF hasta el router de salida y AS-Path de las rutas BGP candidatas}
+
+\evid{Q3_ospf_vs_bgp/show_ip_route_killjoy.png}{Tabla de rutas de Killjoy.}

@@ -1,0 +1,32 @@
+!============================================================
+! Router: Deadlock   AS 10   Responsable: Sebastián
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Deadlock
+!
+interface COMPLETAR
+ description Enlace con Cypher (1.0.0.0/8)
+ ip address 1.0.0.1 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Raze (2.0.0.0/8)
+ ip address 2.0.0.1 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description LAN de Deadlock (172.16.24.0/21)
+ ip address 172.16.24.1 255.255.248.0
+ no shutdown
+!
+router ospf 1
+ network 1.0.0.0 0.255.255.255 area 0
+ network 2.0.0.0 0.255.255.255 area 0
+ network 172.16.24.0 0.0.7.255 area 0
+!
+end
+write memory

@@ -1,0 +1,40 @@
+!============================================================
+! Router: Gekko   AS 30   Responsable: Benjamín
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Gekko
+!
+interface COMPLETAR
+ description Enlace con Neon (8.0.0.0/8)
+ ip address 8.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Reyna (12.0.0.0/8)
+ ip address 12.0.0.1 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description LAN de Gekko (20.25.16.0/20)
+ ip address 20.25.16.1 255.255.240.0
+ no shutdown
+!
+ip dhcp excluded-address 20.25.16.1 20.25.16.10
+ip dhcp pool POOL_LAN
+ network 20.25.16.0 255.255.240.0
+ default-router 20.25.16.1
+ dns-server 0.0.0.0
+!
+router bgp 30
+ neighbor 8.0.0.1 remote-as 20
+ neighbor 12.0.0.2 remote-as 40
+ network 8.0.0.0 mask 255.0.0.0
+ network 12.0.0.0 mask 255.0.0.0
+ network 20.25.16.0 mask 255.255.240.0
+!
+end
+write memory

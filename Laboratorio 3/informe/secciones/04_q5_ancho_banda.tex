@@ -1,0 +1,24 @@
+\subsection{Pregunta 5: impacto del ancho de banda en las métricas OSPF}
+\autor{Sebastián}
+
+\textbf{Escenario:} en el enlace Deadlock--Raze (2.0.0.0) se configura \cmd{bandwidth 150} y se envía un paquete de Annihilation a Paint Shells.
+
+El costo OSPF de una interfaz es
+\[
+  \text{Costo} = \frac{10^{8}}{\text{Bandwidth (bps)}}
+\]
+con parte entera y ancho de banda de referencia de 100~Mbps, el valor por defecto de Cisco.
+
+\subsubsection*{Cálculo de costos}
+\begin{itemize}[nosep]
+  \item Enlace directo con \cmd{bandwidth 150}: $\left\lfloor \dfrac{10^{8}}{150\,000} \right\rfloor = 666$, más el costo de la interfaz LAN de Raze (\pend{valor}).
+  \item Trayecto alternativo Deadlock $\rightarrow$ Cypher $\rightarrow$ Killjoy $\rightarrow$ Raze: \pend{suma de los costos de cada enlace, según \cmd{show ip ospf interface}}.
+\end{itemize}
+
+\evid{Q5_ancho_banda/show_ip_route_deadlock.png}{Tabla de rutas de Deadlock con el ancho de banda modificado.}
+\evid{Q5_ancho_banda/tracert_annihilation_paint.png}{Traza de Annihilation a Paint Shells.}
+
+\subsubsection*{Conclusión}
+\pend{¿el tráfico sigue por 2.0.0.0 o conmuta al trayecto alternativo? Corroborar con la tabla de rutas}
+
+\textit{Recordatorio: restaurar el ancho de banda original después de la prueba.}

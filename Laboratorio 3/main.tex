@@ -1,0 +1,101 @@
+% ============================================================
+% Informe L3 - Redes de Computadores - Grupo 14
+% Compilar con pdfLaTeX (Overleaf: Compiler = pdfLaTeX, Main document = main.tex)
+% Cada seccion vive en su propio archivo para que los tres puedan
+% editar a la vez sin pisarse (ver README.md).
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{evidencias/}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\captionsetup{font=small,labelfont=bf}
+
+% ---------- encabezado ----------
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Redes de Computadores -- Laboratorio 3}
+\rhead{Grupo 14}
+\cfoot{\thepage}
+
+% ---------- variables del contrato (generadas) ----------
+\input{informe/tablas/variables.tex}
+
+% ---------- macros utiles ----------
+% Texto pendiente: sale en rojo, para no entregar nada sin revisar.
+% Antes de entregar: buscar "PENDIENTE" en el PDF y en el codigo.
+\newcommand{\pend}[1]{\textcolor{red}{[PENDIENTE: #1]}}
+% Marca de autor al inicio de cada parte.
+\newcommand{\autor}[1]{\textit{Responsable: #1}\par}
+% Comando de consola en linea.
+\newcommand{\cmd}[1]{\texttt{#1}}
+% Captura de Packet Tracer: \evid{ruta/relativa/a/evidencias.png}{leyenda}
+% Si el archivo aun no existe, deja un recuadro visible en lugar de fallar.
+\newcommand{\evid}[2]{%
+  \IfFileExists{evidencias/#1}{%
+    \begin{figure}[htbp]\centering
+      \includegraphics[width=0.92\linewidth]{#1}
+      \caption{#2}
+    \end{figure}}{%
+    \begin{center}\fbox{\parbox{0.9\linewidth}{\centering
+      \textcolor{red}{Falta captura \texttt{\detokenize{evidencias/#1}}}\\ #2}}\end{center}}}
+
+% ---------- listados de configuracion IOS ----------
+\lstdefinestyle{ios}{
+  basicstyle=\ttfamily\scriptsize,
+  commentstyle=\color{gray},
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!30},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  inputencoding=utf8,
+  extendedchars=true,
+  morecomment=[l]{!},
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+           {ñ}{{\~n}}1 {Ñ}{{\~N}}1,
+}
+\lstset{style=ios}
+
+\begin{document}
+
+\input{informe/portada.tex}
+
+\tableofcontents
+\newpage
+
+% La portada es la seccion 1 del enunciado; el resto parte en 2.
+\setcounter{section}{1}
+
+\input{informe/secciones/02_memoria_calculo.tex}
+\input{informe/secciones/03_registro_configuracion.tex}
+
+\section{Desarrollo de preguntas y análisis}
+\input{informe/secciones/04_q1_dhcp.tex}
+\input{informe/secciones/04_q2_conectividad.tex}
+\input{informe/secciones/04_q3_ospf_vs_bgp.tex}
+\input{informe/secciones/04_q4_caida_enlace.tex}
+\input{informe/secciones/04_q5_ancho_banda.tex}
+\input{informe/secciones/04_q6_tablas_rutas.tex}
+
+\input{informe/secciones/05_conclusiones.tex}
+
+\end{document}

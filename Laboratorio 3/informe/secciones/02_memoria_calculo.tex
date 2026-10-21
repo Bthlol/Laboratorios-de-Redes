@@ -1,0 +1,28 @@
+\section{Memoria de cálculo de subredes}
+
+\autor{cada integrante completa sus LAN; las tablas se generan con \cmd{scripts/generar.py}}
+
+\subsection{Sustitución de variables}
+
+El número de grupo es $Y=\Yval$ y su último dígito es $X=\Xval$. Con ellos, las reglas del enunciado quedan así:
+
+\begin{center}
+\input{informe/tablas/reglas_lan.tex}
+\end{center}
+
+Criterio de conteo de subredes adoptado: \textbf{criterio \CriterioSubredes}
+(\pend{explicar el criterio elegido y por qué: 1 = la subred cero cuenta como primera; 2 = se excluye la subred cero}).
+
+\subsection{Subredes LAN}
+
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\input{informe/tablas/subredes_lan.tex}
+}
+
+\subsection{Enlaces entre routers}
+
+El router nombrado primero en cada enlace toma la dirección \texttt{.1} y el segundo la \texttt{.2}.
+
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\input{informe/tablas/subredes_enlaces.tex}
+}

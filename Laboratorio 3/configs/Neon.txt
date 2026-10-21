@@ -1,0 +1,28 @@
+!============================================================
+! Router: Neon   AS 20   Responsable: Benjamín
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Neon
+!
+interface COMPLETAR
+ description Enlace con Raze (5.0.0.0/8)
+ ip address 5.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Gekko (8.0.0.0/8)
+ ip address 8.0.0.1 255.0.0.0
+ no shutdown
+!
+router bgp 20
+ neighbor 5.0.0.1 remote-as 10
+ neighbor 8.0.0.2 remote-as 30
+ network 5.0.0.0 mask 255.0.0.0
+ network 8.0.0.0 mask 255.0.0.0
+!
+end
+write memory

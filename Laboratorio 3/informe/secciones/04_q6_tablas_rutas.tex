@@ -1,0 +1,30 @@
+\subsection{Pregunta 6: auditoría de tablas de enrutamiento y redistribución}
+\autor{Bárbara (Sage y distancias administrativas); Sebastián aporta la salida de Killjoy}
+
+\subsubsection*{Killjoy}
+\evid{Q6_tablas_rutas/show_ip_route_killjoy.png}{Salida de \cmd{show ip route} en Killjoy.}
+\pend{señalar rutas O, O E2/E1 y B}
+
+\subsubsection*{Sage}
+\evid{Q6_tablas_rutas/show_ip_route_sage.png}{Salida de \cmd{show ip route} en Sage.}
+\pend{señalar rutas B y las demás presentes}
+
+\subsubsection*{Distancia administrativa}
+
+La distancia administrativa (AD) es la confiabilidad que el router asigna a la fuente de una ruta; cuando dos protocolos aprenden el mismo prefijo, instala el de menor AD. Valores por defecto de Cisco IOS:
+
+\begin{center}
+\begin{tabular}{@{}lc@{}}
+  \toprule
+  Origen de la ruta & AD \\
+  \midrule
+  Red conectada (C) & 0 \\
+  Ruta estática (S) & 1 \\
+  eBGP (B) & 20 \\
+  OSPF (O, O E1, O E2) & 110 \\
+  iBGP (B) & 200 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\pend{comentar cuáles de estos valores aparecen entre corchetes en las capturas y qué efecto tienen en Killjoy, donde hay rutas OSPF y BGP}

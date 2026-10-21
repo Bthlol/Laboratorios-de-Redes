@@ -1,0 +1,30 @@
+\section{Registro de configuración}
+
+Los bloques siguientes son los comandos aplicados en cada router, tal como están en la carpeta \texttt{configs/} del repositorio.
+Se ordenan por sistema autónomo.
+
+\newcommand{\registro}[2]{%
+  \subsection{#1 (AS #2)}
+  \lstinputlisting[caption={Configuración de #1}]{configs/#1.txt}}
+
+\subsection*{AS 10 -- Base Alfa (OSPF área 0)}
+\registro{Deadlock}{10}
+\registro{Cypher}{10}
+\registro{Raze}{10}
+\registro{Killjoy}{10}
+
+\subsection*{AS 20 -- Frontera Omega}
+\registro{Neon}{20}
+\registro{Fade}{20}
+
+\subsection*{AS 30 -- Soporte táctico (con DHCP)}
+\registro{Gekko}{30}
+\registro{Viper}{30}
+
+\subsection*{AS 40 -- Defensa y control}
+\registro{Reyna}{40}
+\registro{Omen}{40}
+\registro{Sage}{40}
+
+\subsection*{AS 50 -- Comando supremo}
+\registro{Brimstone}{50}

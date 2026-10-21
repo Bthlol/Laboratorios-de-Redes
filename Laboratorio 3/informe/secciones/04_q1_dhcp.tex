@@ -1,0 +1,24 @@
+\subsection{Pregunta 1: análisis del proceso DHCP (DORA)}
+\autor{Benjamín}
+
+\textbf{Qué debe quedar documentado:}
+\begin{itemize}[nosep]
+  \item Captura en modo Simulación de los cuatro mensajes (Discover, Offer, Request, Acknowledgment) entre Wingman y Gekko.
+  \item Descripción de cada mensaje.
+  \item Direcciones IP de origen y destino del Discover en la capa de red, y por qué se usan.
+  \item Qué ocurre si el segmento no tiene un pool DHCP, y qué dirección adopta el cliente.
+\end{itemize}
+
+\subsubsection*{Los cuatro mensajes}
+\pend{describir Discover, Offer, Request y Acknowledgment con lo observado en la captura}
+
+\evid{Q1_DHCP/dora_simulacion.png}{Mensajes DORA entre Wingman y Gekko (modo Simulación).}
+\evid{Q1_DHCP/discover_capa3.png}{Detalle de capa 3 del paquete DHCP Discover.}
+
+\subsubsection*{Direcciones del Discover}
+\pend{origen, destino y justificación (el cliente aún no tiene dirección IP)}
+
+\subsubsection*{Segmento sin pool DHCP}
+\pend{probar en una LAN sin pool, indicar la dirección adoptada y qué significa ese estado}
+
+\evid{Q1_DHCP/sin_pool.png}{Host solicitando DHCP en un segmento sin pool.}

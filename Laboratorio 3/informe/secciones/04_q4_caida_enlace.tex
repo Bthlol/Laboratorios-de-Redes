@@ -1,0 +1,18 @@
+\subsection{Pregunta 4: tolerancia a fallos y reconvergencia}
+\autor{Benjamín}
+
+\textbf{Escenario:} comunicación entre la LAN de Raze y la LAN de Reyna; se suspende la interfaz del enlace 5.0.0.0 (Raze--Neon) y se comprueba la ruta alternativa por el enlace 6.0.0.0 (Killjoy--Fade). Al terminar se restaura el enlace.
+
+\subsubsection*{Ruta original}
+\evid{Q4_caida_enlace/ruta_original.png}{Traza LAN Raze $\rightarrow$ LAN Reyna con todos los enlaces activos.}
+\pend{ruta activa, router por router}
+
+\subsubsection*{Caída del enlace 5.0.0.0}
+\pend{comando usado (\cmd{shutdown} en la interfaz) y momento exacto en que se aplicó}
+\evid{Q4_caida_enlace/ruta_alternativa.png}{Traza tras suspender el enlace 5.0.0.0.}
+
+\subsubsection*{Nueva ruta y tiempo de convergencia}
+\pend{nueva ruta, tiempo observado (modo Simulación) y por qué tarda eso: OSPF dentro del AS, BGP entre AS}
+
+\subsubsection*{Restauración}
+\pend{confirmar con ping y traza que el enlace volvió a la ruta original}

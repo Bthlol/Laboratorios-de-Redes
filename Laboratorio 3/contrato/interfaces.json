@@ -1,0 +1,61 @@
+{
+  "Deadlock": {
+    "Cypher": "COMPLETAR",
+    "Raze": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Cypher": {
+    "Deadlock": "COMPLETAR",
+    "Killjoy": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Raze": {
+    "Deadlock": "COMPLETAR",
+    "Killjoy": "COMPLETAR",
+    "Neon": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Killjoy": {
+    "Cypher": "COMPLETAR",
+    "Raze": "COMPLETAR",
+    "Fade": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Neon": {
+    "Raze": "COMPLETAR",
+    "Gekko": "COMPLETAR"
+  },
+  "Fade": {
+    "Killjoy": "COMPLETAR",
+    "Viper": "COMPLETAR"
+  },
+  "Gekko": {
+    "Neon": "COMPLETAR",
+    "Reyna": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Viper": {
+    "Fade": "COMPLETAR",
+    "Omen": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Reyna": {
+    "Sage": "COMPLETAR",
+    "Gekko": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Omen": {
+    "Viper": "COMPLETAR",
+    "Sage": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  },
+  "Sage": {
+    "Omen": "COMPLETAR",
+    "Reyna": "COMPLETAR",
+    "Brimstone": "COMPLETAR"
+  },
+  "Brimstone": {
+    "Sage": "COMPLETAR",
+    "LAN": "COMPLETAR"
+  }
+}

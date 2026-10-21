@@ -1,0 +1,40 @@
+!============================================================
+! Router: Viper   AS 30   Responsable: Benjamín
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Viper
+!
+interface COMPLETAR
+ description Enlace con Fade (7.0.0.0/8)
+ ip address 7.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Omen (9.0.0.0/8)
+ ip address 9.0.0.1 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description LAN de Viper (48.7.0.64/26)
+ ip address 48.7.0.65 255.255.255.192
+ no shutdown
+!
+ip dhcp excluded-address 48.7.0.65 48.7.0.74
+ip dhcp pool POOL_LAN
+ network 48.7.0.64 255.255.255.192
+ default-router 48.7.0.65
+ dns-server 0.0.0.0
+!
+router bgp 30
+ neighbor 7.0.0.1 remote-as 20
+ neighbor 9.0.0.2 remote-as 40
+ network 7.0.0.0 mask 255.0.0.0
+ network 9.0.0.0 mask 255.0.0.0
+ network 48.7.0.64 mask 255.255.255.192
+!
+end
+write memory

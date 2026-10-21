@@ -1,0 +1,37 @@
+!============================================================
+! Router: Reyna   AS 40   Responsable: Bárbara
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Reyna
+!
+interface COMPLETAR
+ description Enlace con Sage (11.0.0.0/8)
+ ip address 11.0.0.1 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Gekko (12.0.0.0/8)
+ ip address 12.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description LAN de Reyna (183.112.0.0/13)
+ ip address 183.112.0.1 255.248.0.0
+ no shutdown
+!
+router bgp 40
+ neighbor 12.0.0.1 remote-as 30
+ network 11.0.0.0 mask 255.0.0.0
+ network 12.0.0.0 mask 255.0.0.0
+ network 183.112.0.0 mask 255.248.0.0
+ ! --- iBGP dentro del AS 40 (PROPUESTA, validar antes de activar) ---
+ ! Sage actua como route-reflector; los bordes usan next-hop-self.
+ ! neighbor 11.0.0.2 remote-as 40
+ ! neighbor 11.0.0.2 next-hop-self
+!
+end
+write memory

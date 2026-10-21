@@ -1,0 +1,27 @@
+!============================================================
+! Router: Brimstone   AS 50   Responsable: Bárbara
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Brimstone
+!
+interface COMPLETAR
+ description Enlace con Sage (13.0.0.0/8)
+ ip address 13.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description LAN de Brimstone (192.168.50.0/24)
+ ip address 192.168.50.1 255.255.255.0
+ no shutdown
+!
+router bgp 50
+ neighbor 13.0.0.1 remote-as 40
+ network 13.0.0.0 mask 255.0.0.0
+ network 192.168.50.0 mask 255.255.255.0
+!
+end
+write memory

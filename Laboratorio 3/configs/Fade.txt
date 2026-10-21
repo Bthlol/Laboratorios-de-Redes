@@ -1,0 +1,28 @@
+!============================================================
+! Router: Fade   AS 20   Responsable: Benjamín
+! Criterio de subredes: 2
+! Generado por scripts/generar.py: para cambiar algo, editar el script o
+! contrato/interfaces.json y volver a ejecutarlo.
+!============================================================
+enable
+configure terminal
+hostname Fade
+!
+interface COMPLETAR
+ description Enlace con Killjoy (6.0.0.0/8)
+ ip address 6.0.0.2 255.0.0.0
+ no shutdown
+!
+interface COMPLETAR
+ description Enlace con Viper (7.0.0.0/8)
+ ip address 7.0.0.1 255.0.0.0
+ no shutdown
+!
+router bgp 20
+ neighbor 6.0.0.1 remote-as 10
+ neighbor 7.0.0.2 remote-as 30
+ network 6.0.0.0 mask 255.0.0.0
+ network 7.0.0.0 mask 255.0.0.0
+!
+end
+write memory
