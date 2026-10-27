@@ -3,17 +3,18 @@
 ! Criterio de subredes: 2
 ! Generado por scripts/generar.py: para cambiar algo, editar el script o
 ! contrato/interfaces.json y volver a ejecutarlo.
+! Modulos necesarios: ninguno
 !============================================================
 enable
 configure terminal
 hostname Fade
 !
-interface COMPLETAR
+interface GigabitEthernet0/0
  description Enlace con Killjoy (6.0.0.0/8)
  ip address 6.0.0.2 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/1
  description Enlace con Viper (7.0.0.0/8)
  ip address 7.0.0.1 255.0.0.0
  no shutdown

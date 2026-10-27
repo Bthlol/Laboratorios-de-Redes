@@ -113,17 +113,52 @@ def calcular_lans(criterio):
 
 
 # ---------------------------------------------------------------- interfaces
+# La topologia entregada trae las lineas como DIBUJOS (no son cables reales) y
+# los 1941 solo tienen 2 puertos Gigabit. Supuesto del grupo: se usan los 2
+# Gigabit para la LAN y un enlace Ethernet, y un modulo HWIC-2T (seriales) en
+# la ranura 0 para los enlaces restantes. Reglas de asignacion:
+#   - LAN (o servidor directo)           -> GigabitEthernet0/0
+#   - enlaces Ethernet (GIG_LINKS)       -> siguiente Gigabit libre
+#   - enlaces seriales (SERIAL_LINKS)    -> Serial0/0/0, Serial0/0/1
+# El router nombrado primero en el enlace (.1) es el extremo DCE (clock rate).
+SERIAL_LINKS = {"2.0.0.0", "3.0.0.0", "4.0.0.0", "9.0.0.0", "12.0.0.0", "13.0.0.0"}
+CLOCK_RATE = 64000
+
+
+def es_serial(red):
+    return red in SERIAL_LINKS
+
+
+def plan_ifaces():
+    d = {r: {} for r in AS}
+    for r in AS:
+        gig = 0
+        ser = 0
+        if r in LANS:
+            d[r]["LAN"] = "GigabitEthernet0/0"
+            gig = 1
+        for red, vec, _, _ in enlaces_de(r):
+            if es_serial(red):
+                d[r][vec] = f"Serial0/0/{ser}"
+                ser += 1
+            else:
+                d[r][vec] = f"GigabitEthernet0/{gig}"
+                gig += 1
+        if gig > 2 or ser > 2:
+            raise SystemExit(f"{r}: necesita {gig} Gigabit y {ser} seriales (max 2 y 2)")
+    return d
+
+
 def cargar_ifaces():
+    """Plan por defecto; contrato/interfaces.json (si existe) lo sobreescribe."""
+    d = plan_ifaces()
     ruta = ROOT / "contrato" / "interfaces.json"
     if ruta.exists():
-        return json.loads(ruta.read_text(encoding="utf-8"))
-    d = {r: {} for r in AS}
-    for _, a, b in ENLACES:
-        d[a][b] = "COMPLETAR"
-        d[b][a] = "COMPLETAR"
-    for r in LANS:
-        d[r]["LAN"] = "COMPLETAR"
-    ruta.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        ov = json.loads(ruta.read_text(encoding="utf-8"))
+        for r, m in ov.items():
+            d[r].update(m)
+    else:
+        ruta.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return d
 
 
@@ -168,6 +203,9 @@ def config_router(router, lans, ifaces):
     w(f"! Router: {router}   AS {asn}   Responsable: {DUENO[router]}")
     w("! Generado por scripts/generar.py: para cambiar algo, editar el script o")
     w("! contrato/interfaces.json y volver a ejecutarlo.")
+    mods = "HWIC-2T en la ranura 0 (puertos seriales)" if any(
+        es_serial(r) for r, _, _, _ in enlaces_de(router)) else "ninguno"
+    w(f"! Modulos necesarios: {mods}")
     w("!" + "=" * 60)
     w("enable")
     w("configure terminal")
@@ -178,6 +216,8 @@ def config_router(router, lans, ifaces):
         w(f"interface {ifaces[router][vec]}")
         w(f" description Enlace con {vec} ({red}/8)")
         w(f" ip address {mi_ip} {ENLACE_MASK}")
+        if es_serial(red) and mi_ip.endswith(".1"):
+            w(f" clock rate {CLOCK_RATE}")
         w(" no shutdown")
         w("!")
     # interfaz LAN
@@ -258,7 +298,7 @@ def escribir_configs(lans, ifaces, criterio):
         (ROOT / "configs" / f"{r}.txt").write_text(txt, encoding="utf-8")
 
 
-def escribir_plan_ip(lans, criterio):
+def escribir_plan_ip(lans, criterio, ifaces):
     L = [f"# Plan de IPs (generado) — criterio de subredes {criterio}",
          "",
          "Archivo generado por `scripts/generar.py`; no editar a mano.",
@@ -279,11 +319,22 @@ def escribir_plan_ip(lans, criterio):
         else:
             eq = ", ".join(f"{e} = {ip_equipo(red, i)}" for i, e in enumerate(d["equipos"]))
         L.append(f"| {r} | {red} | {red.netmask} | {primera_util(red)} | {eq} |")
-    L.append("")
+    L += ["", "## Cableado (supuesto del grupo)", "",
+          "La topologia entregada trae lineas dibujadas, no cables. Se cablea asi, y cada router",
+          "con un enlace serial recibe un HWIC-2T en la ranura 0 (router apagado al insertarlo).",
+          "En los seriales, hacer clic primero en el router del extremo .1 (DCE).", "",
+          "| Red | Tipo de cable | Extremo .1 | Extremo .2 |",
+          "| --- | --- | --- | --- |"]
+    for n, a, b in ENLACES:
+        tipo = "Serial DCE" if es_serial(n) else "Copper Cross-Over"
+        L.append(f"| {n}/8 | {tipo} | {a} {ifaces[a][b]} | {b} {ifaces[b][a]} |")
+    L += ["", "LAN: cada router conecta GigabitEthernet0/0 a su switch con cable Copper Straight-Through "
+          "(Brimstone conecta Gi0/0 directo a Location server con Cross-Over). "
+          "Base server va al switch de Cypher, no directo al router.", ""]
     (ROOT / "contrato" / "plan_ip.md").write_text("\n".join(L), encoding="utf-8")
 
 
-def escribir_tex(lans, criterio):
+def escribir_tex(lans, criterio, ifaces):
     out = ROOT / "informe" / "tablas"
     (out / "variables.tex").write_text(
         f"\\newcommand{{\\Xval}}{{{X}}}\n\\newcommand{{\\Yval}}{{{Y}}}\n"
@@ -324,6 +375,15 @@ def escribir_tex(lans, criterio):
     (out / "subredes_enlaces.tex").write_text(
         cab + "\n".join(filas) + "\n\\bottomrule\n\\end{longtable}\n", encoding="utf-8")
 
+    filas = []
+    for n, a, b in ENLACES:
+        tipo = "Serial DCE" if es_serial(n) else "Cobre cruzado"
+        filas.append(f"{n}/8 & {tipo} & {a} {ifaces[a][b]} & {b} {ifaces[b][a]} \\\\")
+    (out / "cableado.tex").write_text(
+        "\\begin{tabular}{@{}llll@{}}\n\\toprule\n"
+        "Red & Cable & Extremo .1 & Extremo .2 \\\\\n\\midrule\n"
+        + "\n".join(filas) + "\n\\bottomrule\n\\end{tabular}\n", encoding="utf-8")
+
     filas = [f"{tex(r)} & {tex(REGLAS[r])} & /{lans[r].prefixlen} \\\\" for r in lans]
     (out / "reglas_lan.tex").write_text(
         "\\begin{tabular}{@{}p{2cm}p{9cm}p{1.5cm}@{}}\n\\toprule\n"
@@ -338,8 +398,8 @@ def main():
     ifaces = cargar_ifaces()
     lans = calcular_lans(a.criterio)
     escribir_configs(lans, ifaces, a.criterio)
-    escribir_plan_ip(lans, a.criterio)
-    escribir_tex(lans, a.criterio)
+    escribir_plan_ip(lans, a.criterio, ifaces)
+    escribir_tex(lans, a.criterio, ifaces)
     pend = sum(1 for r in ifaces.values() for v in r.values() if v == "COMPLETAR")
     print(f"Criterio {a.criterio}: configs, plan_ip.md y tablas .tex generados.")
     if pend:

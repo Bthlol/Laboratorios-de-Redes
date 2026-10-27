@@ -3,22 +3,23 @@
 ! Criterio de subredes: 2
 ! Generado por scripts/generar.py: para cambiar algo, editar el script o
 ! contrato/interfaces.json y volver a ejecutarlo.
+! Modulos necesarios: HWIC-2T en la ranura 0 (puertos seriales)
 !============================================================
 enable
 configure terminal
 hostname Omen
 !
-interface COMPLETAR
+interface Serial0/0/0
  description Enlace con Viper (9.0.0.0/8)
  ip address 9.0.0.2 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/1
  description Enlace con Sage (10.0.0.0/8)
  ip address 10.0.0.1 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/0
  description LAN de Omen (4.93.112.0/21)
  ip address 4.93.112.1 255.255.248.0
  no shutdown

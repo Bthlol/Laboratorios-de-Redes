@@ -3,17 +3,18 @@
 ! Criterio de subredes: 2
 ! Generado por scripts/generar.py: para cambiar algo, editar el script o
 ! contrato/interfaces.json y volver a ejecutarlo.
+! Modulos necesarios: HWIC-2T en la ranura 0 (puertos seriales)
 !============================================================
 enable
 configure terminal
 hostname Brimstone
 !
-interface COMPLETAR
+interface Serial0/0/0
  description Enlace con Sage (13.0.0.0/8)
  ip address 13.0.0.2 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/0
  description LAN de Brimstone (192.168.50.0/24)
  ip address 192.168.50.1 255.255.255.0
  no shutdown

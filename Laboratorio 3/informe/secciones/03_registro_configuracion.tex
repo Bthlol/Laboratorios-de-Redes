@@ -3,6 +3,19 @@
 Los bloques siguientes son los comandos aplicados en cada router, tal como están en la carpeta \texttt{configs/} del repositorio.
 Se ordenan por sistema autónomo.
 
+\subsection*{Supuestos de implementación}
+
+La topología entregada contiene los dispositivos con líneas dibujadas y sin cables reales, y cada router 1941 trae solo dos puertos Gigabit. El grupo la tomó como una referencia y supuso lo siguiente:
+\begin{itemize}[nosep]
+  \item Los enlaces se cablearon según la tabla siguiente. Los enlaces seriales usan un módulo HWIC-2T en la ranura 0 de cada router que lo necesita, con \cmd{clock rate 64000} en el extremo DCE (el router nombrado primero).
+  \item Cada LAN se conecta a la interfaz \texttt{GigabitEthernet0/0} de su router mediante el switch; Base server se conecta al switch de Cypher para quedar en la misma LAN que Tripwire y Spycam.
+  \item Los nombres de los equipos son los que aparecen en la topología entregada.
+\end{itemize}
+
+\begin{center}\footnotesize
+\input{informe/tablas/cableado.tex}
+\end{center}
+
 \newcommand{\registro}[2]{%
   \subsection{#1 (AS #2)}
   \lstinputlisting[caption={Configuración de #1}]{configs/#1.txt}}

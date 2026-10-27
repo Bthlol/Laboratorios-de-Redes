@@ -3,22 +3,24 @@
 ! Criterio de subredes: 2
 ! Generado por scripts/generar.py: para cambiar algo, editar el script o
 ! contrato/interfaces.json y volver a ejecutarlo.
+! Modulos necesarios: HWIC-2T en la ranura 0 (puertos seriales)
 !============================================================
 enable
 configure terminal
 hostname Viper
 !
-interface COMPLETAR
+interface GigabitEthernet0/1
  description Enlace con Fade (7.0.0.0/8)
  ip address 7.0.0.2 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface Serial0/0/0
  description Enlace con Omen (9.0.0.0/8)
  ip address 9.0.0.1 255.0.0.0
+ clock rate 64000
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/0
  description LAN de Viper (48.7.0.64/26)
  ip address 48.7.0.65 255.255.255.192
  no shutdown

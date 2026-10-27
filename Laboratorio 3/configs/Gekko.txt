@@ -3,22 +3,24 @@
 ! Criterio de subredes: 2
 ! Generado por scripts/generar.py: para cambiar algo, editar el script o
 ! contrato/interfaces.json y volver a ejecutarlo.
+! Modulos necesarios: HWIC-2T en la ranura 0 (puertos seriales)
 !============================================================
 enable
 configure terminal
 hostname Gekko
 !
-interface COMPLETAR
+interface GigabitEthernet0/1
  description Enlace con Neon (8.0.0.0/8)
  ip address 8.0.0.2 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface Serial0/0/0
  description Enlace con Reyna (12.0.0.0/8)
  ip address 12.0.0.1 255.0.0.0
+ clock rate 64000
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/0
  description LAN de Gekko (20.25.16.0/20)
  ip address 20.25.16.1 255.255.240.0
  no shutdown

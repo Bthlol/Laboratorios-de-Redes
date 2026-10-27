@@ -111,6 +111,18 @@ Hay dos formas de contar las subredes (ver sección 4, punto 1), por eso hay dos
 
 ---
 
+## 2.4 Cableado y módulos (supuesto del grupo)
+
+La topología entregada trae los dispositivos con **líneas dibujadas, no cables reales**, y cada router 1941 trae solo 2 puertos Gigabit. El grupo lo toma como una referencia y lo explica como supuesto en el informe. Hay que crear los cables a mano con la herramienta de conexiones, siguiendo la tabla de `contrato/plan_ip.md` (sección "Cableado"). Resumen de las reglas:
+
+- **LAN:** `GigabitEthernet0/0` de cada router va a su switch (cable *Copper Straight-Through*). Base server se conecta al **switch** de Cypher, no directo al router. Brimstone conecta `Gi0/0` directo a Location server (*Cross-Over*).
+- **Enlaces Ethernet:** 1.0.0.0, 5.0.0.0, 6.0.0.0, 7.0.0.0, 8.0.0.0, 10.0.0.0 y 11.0.0.0, con cable *Copper Cross-Over* y el siguiente Gigabit libre.
+- **Enlaces seriales:** 2.0.0.0, 3.0.0.0, 4.0.0.0, 9.0.0.0, 12.0.0.0 y 13.0.0.0, con cable *Serial DCE* (se hace clic **primero en el router del extremo .1**, que lleva `clock rate 64000`).
+- **Módulo:** cada router con algún enlace serial (todos menos Neon y Fade) necesita un **HWIC-2T** en la ranura 0. Se apaga el router, se arrastra el módulo desde la pestaña *Physical* y se vuelve a encender. Las interfaces seriales quedan como `Serial0/0/0` y `Serial0/0/1`.
+- **Efecto en OSPF:** los enlaces seriales tienen ancho de banda por defecto de 1544 kbps (costo 64) y los Gigabit costo 1. Esto es relevante para Q3 y Q5.
+
+---
+
 ## 3. Reglas para que nadie bloquee a nadie
 
 - **Misma base, zonas separadas.** Todos parten de la topología entregada, trabajan en su copia (por ejemplo `borrador_Benjamin.pkt`) y solo tocan sus 4 routers.
@@ -131,7 +143,7 @@ Cristóbal Brandau y Juan Cucurella. Estas cinco cosas cambian lo que se configu
 1. **Cómo contar las subredes.** "3.ª subred útil" y "primera subred válida" sugieren el criterio clásico (se excluye la subred cero, criterio 2), pero "32 subredes distintas" para Omen sugiere usar las 32. Hasta tener respuesta, el grupo adopta un solo criterio y lo declara en la memoria de cálculo.
 2. **Quién hace la redistribución.** La sección 3.6.3 del enunciado nombra a Neon y Fade con `router bgp 10`, pero ambos son del AS 20; los que corren OSPF y están en el AS 10 son Raze y Killjoy, y la pregunta 6 trata a Killjoy como router de frontera. La lectura más coherente es redistribuir en Raze y Killjoy, con eBGP hacia Neon y Fade. Los `.txt` del repositorio ya están así.
 3. **Direcciones que se pisan.** La LAN de Omen (4.93.x.x) cae dentro de la red 4.0.0.0/8 del enlace Raze–Killjoy. Funciona por prefijo más largo, pero hay que explicarlo si aparece en una tabla de rutas.
-4. **Enlaces dentro de un mismo AS.** Según el enunciado no hay enlace directo Neon–Fade ni Gekko–Viper, así que cada uno se une al resto solo por eBGP. Hay que confirmarlo abriendo la topología entregada en Packet Tracer, junto con los nombres de interfaz de cada router (se anotan en `contrato/interfaces.json`).
+4. **Enlaces dentro de un mismo AS.** Confirmado en la topología: no hay enlace directo Neon–Fade ni Gekko–Viper, así que cada uno se une al resto solo por eBGP. Además, la topología entregada trae líneas dibujadas y no cables reales; el grupo lo explica como supuesto en el informe (ver 2.4) en lugar de consultarlo.
 5. **Nombre exacto de los archivos de entrega.** El texto del enunciado muestra "Informe L3 Grupo[Nº].pdf" y "Topologia L3 Grupo[Nº].pkt", probablemente con guiones bajos que se perdieron al convertir el PDF. Confirmarlo en el original: un error cuesta 15 puntos.
 6. **iBGP dentro del AS 40** (punto técnico para Bárbara). Reyna, Omen y Sage probablemente necesitan iBGP entre sí (con `next-hop-self`) para pasar rutas de un lado a otro; el enunciado no lo pide explícitamente. Hay una propuesta con Sage como *route-reflector*, comentada en los `.txt`, que no está probada en Packet Tracer.
 

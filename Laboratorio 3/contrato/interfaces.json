@@ -1,61 +1,61 @@
 {
   "Deadlock": {
-    "Cypher": "COMPLETAR",
-    "Raze": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Cypher": "GigabitEthernet0/1",
+    "Raze": "Serial0/0/0"
   },
   "Cypher": {
-    "Deadlock": "COMPLETAR",
-    "Killjoy": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Deadlock": "GigabitEthernet0/1",
+    "Killjoy": "Serial0/0/0"
   },
   "Raze": {
-    "Deadlock": "COMPLETAR",
-    "Killjoy": "COMPLETAR",
-    "Neon": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Deadlock": "Serial0/0/0",
+    "Killjoy": "Serial0/0/1",
+    "Neon": "GigabitEthernet0/1"
   },
   "Killjoy": {
-    "Cypher": "COMPLETAR",
-    "Raze": "COMPLETAR",
-    "Fade": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Cypher": "Serial0/0/0",
+    "Raze": "Serial0/0/1",
+    "Fade": "GigabitEthernet0/1"
   },
   "Neon": {
-    "Raze": "COMPLETAR",
-    "Gekko": "COMPLETAR"
+    "Raze": "GigabitEthernet0/0",
+    "Gekko": "GigabitEthernet0/1"
   },
   "Fade": {
-    "Killjoy": "COMPLETAR",
-    "Viper": "COMPLETAR"
+    "Killjoy": "GigabitEthernet0/0",
+    "Viper": "GigabitEthernet0/1"
   },
   "Gekko": {
-    "Neon": "COMPLETAR",
-    "Reyna": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Neon": "GigabitEthernet0/1",
+    "Reyna": "Serial0/0/0"
   },
   "Viper": {
-    "Fade": "COMPLETAR",
-    "Omen": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Fade": "GigabitEthernet0/1",
+    "Omen": "Serial0/0/0"
   },
   "Reyna": {
-    "Sage": "COMPLETAR",
-    "Gekko": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Sage": "GigabitEthernet0/1",
+    "Gekko": "Serial0/0/0"
   },
   "Omen": {
-    "Viper": "COMPLETAR",
-    "Sage": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Viper": "Serial0/0/0",
+    "Sage": "GigabitEthernet0/1"
   },
   "Sage": {
-    "Omen": "COMPLETAR",
-    "Reyna": "COMPLETAR",
-    "Brimstone": "COMPLETAR"
+    "Omen": "GigabitEthernet0/0",
+    "Reyna": "GigabitEthernet0/1",
+    "Brimstone": "Serial0/0/0"
   },
   "Brimstone": {
-    "Sage": "COMPLETAR",
-    "LAN": "COMPLETAR"
+    "LAN": "GigabitEthernet0/0",
+    "Sage": "Serial0/0/0"
   }
 }

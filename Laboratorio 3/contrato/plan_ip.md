@@ -33,3 +33,27 @@ Archivo generado por `scripts/generar.py`; no editar a mano.
 | Reyna | 183.112.0.0/13 | 255.248.0.0 | 183.112.0.1 | Dismiss = 183.112.0.2, Devour = 183.112.0.3, Empress = 183.112.0.4 |
 | Omen | 4.93.112.0/21 | 255.255.248.0 | 4.93.112.1 | Paranoia = 4.93.112.2, Dark cover = 4.93.112.3, Shrouded Step = 4.93.112.4 |
 | Brimstone | 192.168.50.0/24 | 255.255.255.0 | 192.168.50.1 | Location server = 192.168.50.2 |
+
+## Cableado (supuesto del grupo)
+
+La topologia entregada trae lineas dibujadas, no cables. Se cablea asi, y cada router
+con un enlace serial recibe un HWIC-2T en la ranura 0 (router apagado al insertarlo).
+En los seriales, hacer clic primero en el router del extremo .1 (DCE).
+
+| Red | Tipo de cable | Extremo .1 | Extremo .2 |
+| --- | --- | --- | --- |
+| 1.0.0.0/8 | Copper Cross-Over | Deadlock GigabitEthernet0/1 | Cypher GigabitEthernet0/1 |
+| 2.0.0.0/8 | Serial DCE | Deadlock Serial0/0/0 | Raze Serial0/0/0 |
+| 3.0.0.0/8 | Serial DCE | Cypher Serial0/0/0 | Killjoy Serial0/0/0 |
+| 4.0.0.0/8 | Serial DCE | Raze Serial0/0/1 | Killjoy Serial0/0/1 |
+| 5.0.0.0/8 | Copper Cross-Over | Raze GigabitEthernet0/1 | Neon GigabitEthernet0/0 |
+| 6.0.0.0/8 | Copper Cross-Over | Killjoy GigabitEthernet0/1 | Fade GigabitEthernet0/0 |
+| 7.0.0.0/8 | Copper Cross-Over | Fade GigabitEthernet0/1 | Viper GigabitEthernet0/1 |
+| 8.0.0.0/8 | Copper Cross-Over | Neon GigabitEthernet0/1 | Gekko GigabitEthernet0/1 |
+| 9.0.0.0/8 | Serial DCE | Viper Serial0/0/0 | Omen Serial0/0/0 |
+| 10.0.0.0/8 | Copper Cross-Over | Omen GigabitEthernet0/1 | Sage GigabitEthernet0/0 |
+| 11.0.0.0/8 | Copper Cross-Over | Reyna GigabitEthernet0/1 | Sage GigabitEthernet0/1 |
+| 12.0.0.0/8 | Serial DCE | Gekko Serial0/0/0 | Reyna Serial0/0/0 |
+| 13.0.0.0/8 | Serial DCE | Sage Serial0/0/0 | Brimstone Serial0/0/0 |
+
+LAN: cada router conecta GigabitEthernet0/0 a su switch con cable Copper Straight-Through (Brimstone conecta Gi0/0 directo a Location server con Cross-Over). Base server va al switch de Cypher, no directo al router.

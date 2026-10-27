@@ -3,27 +3,29 @@
 ! Criterio de subredes: 2
 ! Generado por scripts/generar.py: para cambiar algo, editar el script o
 ! contrato/interfaces.json y volver a ejecutarlo.
+! Modulos necesarios: HWIC-2T en la ranura 0 (puertos seriales)
 !============================================================
 enable
 configure terminal
 hostname Raze
 !
-interface COMPLETAR
+interface Serial0/0/0
  description Enlace con Deadlock (2.0.0.0/8)
  ip address 2.0.0.2 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface Serial0/0/1
  description Enlace con Killjoy (4.0.0.0/8)
  ip address 4.0.0.1 255.0.0.0
+ clock rate 64000
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/1
  description Enlace con Neon (5.0.0.0/8)
  ip address 5.0.0.1 255.0.0.0
  no shutdown
 !
-interface COMPLETAR
+interface GigabitEthernet0/0
  description LAN de Raze (172.16.64.0/21)
  ip address 172.16.64.1 255.255.248.0
  no shutdown
