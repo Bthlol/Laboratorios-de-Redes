@@ -25,8 +25,6 @@ Los mensajes viajan en paquetes UDP: el cliente usa el puerto 68 y el servidor e
 
 Como resultado del intercambio, Wingman recibió la dirección \texttt{20.25.16.11}, la máscara \texttt{255.255.240.0} y la puerta de enlace \texttt{20.25.16.1}. La primera dirección asignada es la .11 porque las diez primeras direcciones útiles de la subred (de .1 a .10) están excluidas del pool para asignaciones estáticas.
 
-\pend{confirmar el tipo de cada mensaje en la pestaña Inbound/Outbound PDU Details de Packet Tracer}
-
 \evid{Q1_DHCP/offer_wingman.png}{Offer recibida por Wingman (capas 2, 3, 4 y 7).}
 \evid{Q1_DHCP/request_wingman.png}{Wingman recibe la Offer y responde con el Request.}
 \evid{Q1_DHCP/request_ack_gekko.png}{Gekko recibe el Request y responde con el Acknowledgment.}
@@ -45,6 +43,6 @@ Se usan esas direcciones porque el cliente todavía no tiene ninguna dirección 
 
 Para comprobarlo se eliminó temporalmente el pool en Gekko (\cmd{no ip dhcp pool POOL\_LAN}) y se repitió la solicitud desde Wingman. Packet Tracer informó que la solicitud DHCP falló, y el host quedó con la dirección \textbf{169.254.181.41}. Después se restauró el pool y Wingman volvió a obtener una dirección de la subred 20.25.16.0/20.
 
-Al no haber ningún pool, el router no genera una Offer, por lo que el cliente nunca recibe configuración de red. Tras agotar sus intentos, el host se asigna a sí mismo una dirección del rango \texttt{169.254.0.0/16}, una dirección \textit{link-local} (APIPA) con máscara \texttt{255.255.0.0} \pend{verificar la máscara en la captura}. Este estado significa que la autoconfiguración falló: la dirección solo permite comunicarse con otros equipos del mismo segmento que también se hayan autoasignado una, y no incluye puerta de enlace, por lo que el host no puede salir de su LAN.
+Al no haber ningún pool, el router no genera una Offer, por lo que el cliente nunca recibe configuración de red. Tras agotar sus intentos, el host se asigna a sí mismo una dirección del rango \texttt{169.254.0.0/16}, una dirección \textit{link-local} (APIPA) con máscara \texttt{255.255.0.0}. Este estado significa que la autoconfiguración falló: la dirección solo permite comunicarse con otros equipos del mismo segmento que también se hayan autoasignado una, y no incluye puerta de enlace, por lo que el host no puede salir de su LAN.
 
 \evid{Q1_DHCP/sin_pool.png}{Host solicitando DHCP en un segmento sin pool.}
