@@ -1,20 +1,36 @@
 \subsection{Pregunta 4: tolerancia a fallos y reconvergencia}
 \autor{Benjamín}
 
-\textbf{Escenario:} comunicación entre un host de la LAN de Raze (Paint Shells, \texttt{172.16.64.2}) y uno de la LAN de Reyna (Dismiss, \texttt{183.112.0.2}). Se suspende la interfaz del enlace 5.0.0.0 (Raze--Neon) y se comprueba el camino alternativo por el enlace 6.0.0.0 (Killjoy--Fade). Al terminar se restaura el enlace. \pend{confirmar las direcciones de los hosts con \cmd{ipconfig} si el criterio de subredes cambia}
+\textbf{Escenario:} comunicación entre un host de la LAN de Raze (Paint Shells, \texttt{172.16.64.2}) y uno de la LAN de Reyna (Dismiss, \texttt{183.112.0.2}). Se suspende la interfaz del enlace 5.0.0.0 (Raze--Neon), se observa la ruta alternativa y luego se restaura el enlace.
+
+Para leer las trazas hay que tener en cuenta que, en \cmd{tracert}, cada router responde con la dirección de la interfaz por la que \emph{envía} la respuesta de vuelta al origen, no con la de la interfaz por la que le entró el paquete. Por eso la dirección de cada salto también informa sobre el camino de regreso.
 
 \subsubsection*{Ruta original}
 
-Desde Paint Shells se ejecutó \cmd{tracert 183.112.0.2}, y en Raze se consultó la ruta hacia la LAN de Reyna.
+Desde Paint Shells se ejecutó \cmd{tracert 183.112.0.2}, y en Raze se consultó la tabla de rutas.
 
 \evid{Q4_caida_enlace/ruta_original.png}{Traza de Paint Shells a Dismiss con todos los enlaces activos.}
-\evid{Q4_caida_enlace/show_ip_route_raze_antes.png}{Tabla de rutas de Raze hacia la LAN de Reyna antes de la caída.}
+\evid{Q4_caida_enlace/show_ip_route_raze_antes.png}{Rutas BGP de Raze antes de la caída: la LAN de Reyna se aprende vía Neon (5.0.0.2).}
 
-\pend{ruta activa router por router, y el protocolo (B u O) con que Raze aprendió la ruta}
+\begin{center}\small
+\begin{tabular}{@{}clll@{}}
+\toprule
+Salto & Dirección & Router & Sistema autónomo \\
+\midrule
+1 & 172.16.64.1 & Raze & AS 10 \\
+2 & 5.0.0.2 & Neon & AS 20 \\
+3 & 8.0.0.2 & Gekko & AS 30 \\
+4 & 12.0.0.2 & Reyna & AS 40 \\
+5 & 183.112.0.2 & Dismiss & -- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El tráfico atraviesa cuatro routers (Raze, Neon, Gekko y Reyna), lo que coincide con el TTL de 124 de las respuestas ($128-4$). Raze aprendió la LAN de Reyna por \textbf{BGP} (código \texttt{B}, \texttt{[20/0] via 5.0.0.2}), es decir, por su sesión eBGP con Neon y con distancia administrativa 20. Raze también conocía esa red por OSPF, porque Killjoy redistribuye en OSPF lo que aprende por BGP desde Fade, pero esa ruta tiene distancia 110 y por eso no se instalaba.
 
 \subsubsection*{Caída del enlace 5.0.0.0}
 
-Se lanzó un ping continuo desde Paint Shells (\cmd{ping -t 183.112.0.2}) y se suspendió la interfaz del enlace en Raze:
+Se lanzó un ping continuo desde Paint Shells (\cmd{ping -t 183.112.0.2}) y, con el ping en curso, se suspendió la interfaz del enlace en Raze:
 
 \begin{lstlisting}
 Raze# configure terminal
@@ -22,14 +38,40 @@ Raze(config)# interface GigabitEthernet0/1
 Raze(config-if)# shutdown
 \end{lstlisting}
 
-\evid{Q4_caida_enlace/ping_continuo_caida.png}{Ping continuo durante la caída: paquetes perdidos hasta que se restablece la comunicación.}
+\evid{Q4_caida_enlace/ping_continuo_caida.png}{Ping continuo durante la caída: tres paquetes perdidos y cambio de TTL de 124 a 121.}
+
+Se perdieron \textbf{3 paquetes de 42} (7\,\%, que Packet Tracer redondea a 8\,\%). Como cada intento sin respuesta dura cerca de un segundo, la comunicación se restableció en unos \textbf{3 segundos}. El TTL de las respuestas pasó de 124 a 121: el camino nuevo tiene tres routers más.
 
 \subsubsection*{Nueva ruta y tiempo de convergencia}
 
 \evid{Q4_caida_enlace/ruta_alternativa.png}{Traza tras suspender el enlace 5.0.0.0.}
-\evid{Q4_caida_enlace/show_ip_route_raze_despues.png}{Tabla de rutas de Raze tras la caída.}
+\evid{Q4_caida_enlace/show_ip_route_raze_despues.png}{Ruta de Raze hacia la LAN de Reyna tras la caída: ahora la aprende por OSPF desde Killjoy (4.0.0.2).}
 
-\pend{nueva ruta, número de paquetes perdidos y tiempo de convergencia observado (cada ping sin respuesta equivale a cerca de un segundo), y justificación: detección inmediata de la caída de interfaz, recálculo en OSPF dentro del AS 10 y selección de otra ruta en BGP/OSPF}
+\begin{center}\small
+\begin{tabular}{@{}clll@{}}
+\toprule
+Salto & Dirección & Router & Sistema autónomo \\
+\midrule
+1 & 172.16.64.1 & Raze & AS 10 \\
+2 & 4.0.0.2 & Killjoy & AS 10 \\
+3 & 6.0.0.2 & Fade & AS 20 \\
+4 & 7.0.0.2 & Viper & AS 30 \\
+5 & 9.0.0.2 & Omen & AS 40 \\
+6 & 10.0.0.2 & Sage & AS 40 \\
+7 & 11.0.0.1 & Reyna & AS 40 \\
+8 & 183.112.0.2 & Dismiss & -- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+La nueva ruta sale del AS 10 por Killjoy y el enlace 6.0.0.0, y entra al AS 40 por Omen en lugar de por Reyna. Ahora pasa por siete routers, lo que coincide con el TTL de 121 ($128-7$). En Raze, la ruta pasó a ser \textbf{OSPF}, con distancia 110 y métrica 20 (la métrica por defecto de una ruta redistribuida), con siguiente salto 4.0.0.2 por \texttt{Serial0/0/1}, y anunciada por Killjoy (\texttt{from 172.16.120.1}). Packet Tracer la etiqueta como \textit{intra area} en el detalle, aunque es una ruta externa que Killjoy inyecta desde BGP.
+
+La reconvergencia fue rápida por tres razones:
+\begin{enumerate}[nosep]
+  \item \textbf{Detección inmediata.} Al hacer \cmd{shutdown}, Raze pierde la red conectada 5.0.0.0 al instante y cierra la sesión eBGP con Neon sin esperar el temporizador de espera de BGP (180\,s), de modo que retira la ruta \texttt{B}.
+  \item \textbf{Ruta de respaldo ya conocida.} La ruta OSPF hacia 183.112.0.0/13 ya estaba en la base de datos de Raze, por la redistribución de Killjoy. Al desaparecer la ruta con distancia 20, Raze instala la de distancia 110 sin tener que calcular nada nuevo.
+  \item \textbf{Camino de vuelta.} Los paquetes perdidos corresponden sobre todo al regreso: Neon tiene que retirar por BGP la LAN de Raze, y los AS 30 y 40 tienen que aprenderla por el camino de Fade. Ese intercambio de mensajes BGP explica los cerca de 3 segundos sin respuesta.
+\end{enumerate}
 
 \subsubsection*{Restauración}
 
@@ -37,4 +79,15 @@ Raze(config-if)# shutdown
 Raze(config-if)# no shutdown
 \end{lstlisting}
 
-\pend{confirmar con ping y traza que el tráfico volvió a la ruta original, y adjuntar la captura}
+\evid{Q4_caida_enlace/ruta_restaurada.png}{Traza tras restaurar el enlace 5.0.0.0.}
+
+Tras restaurar el enlace, la ida volvió al camino original: siguen siendo cinco saltos por Raze, Neon, Gekko y Reyna, porque Raze vuelve a preferir la ruta BGP de Neon (distancia 20) sobre la OSPF de Killjoy. Sin embargo, la vuelta \textbf{no} regresó a su estado inicial. Gekko ahora responde con \texttt{12.0.0.1}, su interfaz hacia Reyna, y Reyna con \texttt{11.0.0.1}, su interfaz hacia Sage. Es decir, Gekko envía el tráfico hacia la LAN de Raze a través de Reyna, y Reyna lo envía por Sage, Omen y el resto del camino alternativo.
+
+Esto se explica por la redistribución mutua en el AS 40. Durante la caída, Reyna aprendió la LAN de Raze por OSPF 40 (redistribuida por Omen) y la volvió a anunciar a Gekko por BGP con un AS-Path de solo \texttt{40}, porque la redistribución borra los sistemas autónomos anteriores. Al restaurarse el enlace, Neon vuelve a anunciar la misma red con AS-Path \texttt{20 10}, que es más largo, así que Gekko mantiene la ruta de Reyna. A su vez, Gekko ya no le anuncia a Reyna la ruta de Neon, porque su mejor ruta proviene de la propia Reyna. El resultado es un enrutamiento asimétrico que funciona, pero que no vuelve solo al estado previo a la falla.
+
+Las tablas lo confirman. En la tabla BGP de Gekko, la red 172.16.64.0/21 tiene dos caminos: el elegido (\texttt{>}) va por Reyna (12.0.0.2) con AS-Path \texttt{40 ?}, y el de Neon (8.0.0.1), con AS-Path \texttt{20 10 ?}, queda solo como válido. El origen \texttt{?} (\textit{incomplete}) indica que la ruta entró a BGP por redistribución. Lo mismo ocurre con el resto de las redes del AS 10. Incluso la LAN de Viper (48.7.0.64/26), que pertenece al propio AS 30, aparece aprendida desde el AS 40. Normalmente Gekko descartaría esa ruta al ver su propio número de AS en el AS-Path, pero la redistribución lo borró. En Reyna, la ruta hacia 172.16.64.0/21 es OSPF 40 vía Sage (11.0.0.2), anunciada por Omen (\texttt{from 10.0.0.1}).
+
+\evid{Q4_caida_enlace/show_ip_bgp_gekko_restaurado.png}{Tabla BGP de Gekko tras la restauración: las redes del AS 10 se prefieren vía Reyna (AS-Path \texttt{40}) sobre Neon (\texttt{20 10}).}
+\evid{Q4_caida_enlace/show_ip_route_reyna_restaurado.png}{Ruta de Reyna hacia la LAN de Raze tras la restauración: OSPF 40 vía Sage.}
+
+La solución de fondo sería filtrar en Reyna, Omen y Sage las rutas externas que se redistribuyen de OSPF 40 hacia BGP, para que el AS 40 solo anuncie sus propias redes. Reiniciar las sesiones con \cmd{clear ip bgp *} no garantiza volver al estado inicial, porque el resultado depende del orden en que lleguen de nuevo los anuncios.
