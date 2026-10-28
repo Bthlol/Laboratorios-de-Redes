@@ -1,24 +1,50 @@
 \subsection{Pregunta 1: análisis del proceso DHCP (DORA)}
 \autor{Benjamín}
 
-\textbf{Qué debe quedar documentado:}
-\begin{itemize}[nosep]
-  \item Captura en modo Simulación de los cuatro mensajes (Discover, Offer, Request, Acknowledgment) entre Wingman y Gekko.
-  \item Descripción de cada mensaje.
-  \item Direcciones IP de origen y destino del Discover en la capa de red, y por qué se usan.
-  \item Qué ocurre si el segmento no tiene un pool DHCP, y qué dirección adopta el cliente.
-\end{itemize}
+Se capturó en modo Simulación el intercambio entre el host Wingman y el router Gekko, que actúa como servidor DHCP de la LAN 20.25.16.0/20 (dirección del router: 20.25.16.1). Para forzar una solicitud nueva, el host se pasó a configuración estática y luego otra vez a DHCP.
+
+\evid{Q1_DHCP/dora_simulacion.png}{Mensajes DORA entre Wingman y Gekko en modo Simulación.}
 
 \subsubsection*{Los cuatro mensajes}
-\pend{describir Discover, Offer, Request y Acknowledgment con lo observado en la captura}
 
-\evid{Q1_DHCP/dora_simulacion.png}{Mensajes DORA entre Wingman y Gekko (modo Simulación).}
-\evid{Q1_DHCP/discover_capa3.png}{Detalle de capa 3 del paquete DHCP Discover.}
+Los mensajes viajan en paquetes UDP: el cliente usa el puerto 68 y el servidor el 67. Wingman aún no tiene dirección IP durante todo el intercambio, por lo que todos van con destino de difusión (\texttt{255.255.255.255}) y el switch Gekko~SW los replica a todos sus puertos; Dizzy y Thrash los reciben, pero los descartan porque no son servidores ni los destinatarios de la configuración.
 
-\subsubsection*{Direcciones del Discover}
-\pend{origen, destino y justificación (el cliente aún no tiene dirección IP)}
+\begin{center}\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{3.8cm}@{}}
+  \toprule
+  Mensaje & Sentido & IP origen & IP destino & Puertos UDP & Función \\
+  \midrule
+  Discover & Wingman $\rightarrow$ difusión & 0.0.0.0 & 255.255.255.255 & 68 $\rightarrow$ 67 & El cliente busca servidores DHCP en su segmento. \\
+  Offer & Gekko $\rightarrow$ Wingman & 20.25.16.1 & 255.255.255.255 & 67 $\rightarrow$ 68 & El servidor propone una configuración de red. \\
+  Request & Wingman $\rightarrow$ Gekko & 0.0.0.0 & 255.255.255.255 & 68 $\rightarrow$ 67 & El cliente acepta la oferta; en la capa de aplicación indica el servidor elegido (20.25.16.1). \\
+  Acknowledgment & Gekko $\rightarrow$ Wingman & 20.25.16.1 & 255.255.255.255 & 67 $\rightarrow$ 68 & El servidor confirma la asignación. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Como resultado del intercambio, Wingman recibió la dirección \texttt{20.25.16.11}, la máscara \texttt{255.255.240.0} y la puerta de enlace \texttt{20.25.16.1}. La primera dirección asignada es la .11 porque las diez primeras direcciones útiles de la subred (de .1 a .10) están excluidas del pool para asignaciones estáticas.
+
+\pend{confirmar el tipo de cada mensaje en la pestaña Inbound/Outbound PDU Details de Packet Tracer}
+
+\evid{Q1_DHCP/offer_wingman.png}{Offer recibida por Wingman (capas 2, 3, 4 y 7).}
+\evid{Q1_DHCP/request_wingman.png}{Wingman recibe la Offer y responde con el Request.}
+\evid{Q1_DHCP/request_ack_gekko.png}{Gekko recibe el Request y responde con el Acknowledgment.}
+
+En la simulación, la Offer aparece alrededor de 2 segundos (tiempo simulado) después del Discover.
+
+\subsubsection*{Direcciones IP del Discover}
+
+\evid{Q1_DHCP/discover_capa3.png}{Detalle del DHCP Discover en Gekko: capas 2, 3, 4 y 7.}
+
+En la capa de red, el Discover lleva como \textbf{origen 0.0.0.0} y como \textbf{destino 255.255.255.255}. En la capa de enlace, la MAC de origen es la de Wingman (\texttt{00D0.BC6D.B529}) y la de destino es la de difusión (\texttt{FFFF.FFFF.FFFF}).
+
+Se usan esas direcciones porque el cliente todavía no tiene ninguna dirección IP asignada, así que no puede usar una como origen y usa la dirección ``no especificada'' \texttt{0.0.0.0}. Tampoco conoce la dirección del servidor, por lo que envía el mensaje a la dirección de difusión limitada \texttt{255.255.255.255}, que llega a todos los equipos del segmento sin que un router la reenvíe a otras redes. Así, cualquier servidor DHCP presente en la LAN puede recibirlo y responder.
 
 \subsubsection*{Segmento sin pool DHCP}
-\pend{probar en una LAN sin pool, indicar la dirección adoptada y qué significa ese estado}
+
+Para comprobarlo se eliminó temporalmente el pool en Gekko (\cmd{no ip dhcp pool POOL\_LAN}) y se repitió la solicitud desde Wingman. Packet Tracer informó que la solicitud DHCP falló, y el host quedó con la dirección \textbf{169.254.181.41}. Después se restauró el pool y Wingman volvió a obtener una dirección de la subred 20.25.16.0/20.
+
+Al no haber ningún pool, el router no genera una Offer, por lo que el cliente nunca recibe configuración de red. Tras agotar sus intentos, el host se asigna a sí mismo una dirección del rango \texttt{169.254.0.0/16}, una dirección \textit{link-local} (APIPA) con máscara \texttt{255.255.0.0} \pend{verificar la máscara en la captura}. Este estado significa que la autoconfiguración falló: la dirección solo permite comunicarse con otros equipos del mismo segmento que también se hayan autoasignado una, y no incluye puerta de enlace, por lo que el host no puede salir de su LAN.
 
 \evid{Q1_DHCP/sin_pool.png}{Host solicitando DHCP en un segmento sin pool.}

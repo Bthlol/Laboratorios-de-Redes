@@ -1,18 +1,40 @@
 \subsection{Pregunta 4: tolerancia a fallos y reconvergencia}
 \autor{Benjamín}
 
-\textbf{Escenario:} comunicación entre la LAN de Raze y la LAN de Reyna; se suspende la interfaz del enlace 5.0.0.0 (Raze--Neon) y se comprueba la ruta alternativa por el enlace 6.0.0.0 (Killjoy--Fade). Al terminar se restaura el enlace.
+\textbf{Escenario:} comunicación entre un host de la LAN de Raze (Paint Shells, \texttt{172.16.64.2}) y uno de la LAN de Reyna (Dismiss, \texttt{183.112.0.2}). Se suspende la interfaz del enlace 5.0.0.0 (Raze--Neon) y se comprueba el camino alternativo por el enlace 6.0.0.0 (Killjoy--Fade). Al terminar se restaura el enlace. \pend{confirmar las direcciones de los hosts con \cmd{ipconfig} si el criterio de subredes cambia}
 
 \subsubsection*{Ruta original}
-\evid{Q4_caida_enlace/ruta_original.png}{Traza LAN Raze $\rightarrow$ LAN Reyna con todos los enlaces activos.}
-\pend{ruta activa, router por router}
+
+Desde Paint Shells se ejecutó \cmd{tracert 183.112.0.2}, y en Raze se consultó la ruta hacia la LAN de Reyna.
+
+\evid{Q4_caida_enlace/ruta_original.png}{Traza de Paint Shells a Dismiss con todos los enlaces activos.}
+\evid{Q4_caida_enlace/show_ip_route_raze_antes.png}{Tabla de rutas de Raze hacia la LAN de Reyna antes de la caída.}
+
+\pend{ruta activa router por router, y el protocolo (B u O) con que Raze aprendió la ruta}
 
 \subsubsection*{Caída del enlace 5.0.0.0}
-\pend{comando usado (\cmd{shutdown} en la interfaz) y momento exacto en que se aplicó}
-\evid{Q4_caida_enlace/ruta_alternativa.png}{Traza tras suspender el enlace 5.0.0.0.}
+
+Se lanzó un ping continuo desde Paint Shells (\cmd{ping -t 183.112.0.2}) y se suspendió la interfaz del enlace en Raze:
+
+\begin{lstlisting}
+Raze# configure terminal
+Raze(config)# interface GigabitEthernet0/1
+Raze(config-if)# shutdown
+\end{lstlisting}
+
+\evid{Q4_caida_enlace/ping_continuo_caida.png}{Ping continuo durante la caída: paquetes perdidos hasta que se restablece la comunicación.}
 
 \subsubsection*{Nueva ruta y tiempo de convergencia}
-\pend{nueva ruta, tiempo observado (modo Simulación) y por qué tarda eso: OSPF dentro del AS, BGP entre AS}
+
+\evid{Q4_caida_enlace/ruta_alternativa.png}{Traza tras suspender el enlace 5.0.0.0.}
+\evid{Q4_caida_enlace/show_ip_route_raze_despues.png}{Tabla de rutas de Raze tras la caída.}
+
+\pend{nueva ruta, número de paquetes perdidos y tiempo de convergencia observado (cada ping sin respuesta equivale a cerca de un segundo), y justificación: detección inmediata de la caída de interfaz, recálculo en OSPF dentro del AS 10 y selección de otra ruta en BGP/OSPF}
 
 \subsubsection*{Restauración}
-\pend{confirmar con ping y traza que el enlace volvió a la ruta original}
+
+\begin{lstlisting}
+Raze(config-if)# no shutdown
+\end{lstlisting}
+
+\pend{confirmar con ping y traza que el tráfico volvió a la ruta original, y adjuntar la captura}
