@@ -10,14 +10,22 @@ El número de grupo es $Y=\Yval$ y su último dígito es $X=\Xval$. Con ellos, l
 \input{informe/tablas/reglas_lan.tex}
 \end{center}
 
-Criterio de conteo de subredes adoptado: \textbf{criterio \CriterioSubredes}
-(\pend{explicar el criterio elegido y por qué: 1 = la subred cero cuenta como primera; 2 = se excluye la subred cero}).
+Criterio de conteo de subredes adoptado: \textbf{criterio \CriterioSubredes}. La subred cero, la que comparte dirección con la red base, no se cuenta. El enunciado habla de la ``3.ª subred útil'' y de la ``primera subred válida'', y en el subnetting clásico la subred cero y la última (la de broadcast) no se consideran útiles. Con este criterio la n-ésima subred útil es la que tiene índice n al numerar desde cero.
 
 \subsection{Subredes LAN}
 
 {\footnotesize\setlength{\tabcolsep}{3pt}
 \input{informe/tablas/subredes_lan.tex}
 }
+
+\subsection{Cálculo de las LAN del AS 10}
+\autor{Sebastián}
+
+Las cuatro LAN de Base Alfa salen de 172.16.0.0/16 dividida en 32 subredes iguales. Como $32 = 2^5$, se toman 5 bits prestados y el prefijo pasa de /16 a /21, que corresponde a la máscara 255.255.248.0. Quedan 11 bits para hosts, o sea $2^{11} - 2 = 2046$ direcciones útiles por subred. El salto entre una subred y la siguiente es $256 - 248 = 8$ en el tercer octeto, así que con el criterio adoptado la n-ésima subred útil empieza en 172.16.$(8n)$.0.
+
+Con eso, Deadlock (3.ª subred) queda en 172.16.24.0/21, Raze (8.ª) en 172.16.64.0/21, Killjoy (15.ª) en 172.16.120.0/21 y Cypher (24.ª) en 172.16.192.0/21. El broadcast de cada una es la dirección anterior al inicio de la subred siguiente. Por ejemplo, para Deadlock la siguiente subred empieza en 172.16.32.0, así que su broadcast es 172.16.31.255 y el rango útil va de 172.16.24.1 a 172.16.31.254. El router toma la primera dirección útil y los equipos siguen desde la .2 en el orden del enunciado.
+
+Para OSPF las redes se declaran con la wildcard, que es el inverso de la máscara ($255.255.255.255 - \text{máscara}$). Las LAN /21 usan 0.0.7.255 y los enlaces /8 usan 0.255.255.255.
 
 \subsection{Enlaces entre routers}
 

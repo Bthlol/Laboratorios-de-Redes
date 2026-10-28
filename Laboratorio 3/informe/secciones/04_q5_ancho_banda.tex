@@ -1,24 +1,61 @@
 \subsection{Pregunta 5: impacto del ancho de banda en las métricas OSPF}
 \autor{Sebastián}
 
-\textbf{Escenario:} en el enlace Deadlock--Raze (2.0.0.0) se configura \cmd{bandwidth 150} y se envía un paquete de Annihilation a Paint Shells.
+En esta pregunta se cambió el ancho de banda configurado en el enlace serial entre Deadlock y Raze (red 2.0.0.0) y se revisó si el tráfico de Annhilation hacia Paint Shells seguía usando ese enlace o se iba por otro camino. La prueba se hizo en tres momentos: con el enlace en su valor por defecto, con \cmd{bandwidth 150} aplicado en la interfaz Serial0/0/0 de Deadlock y después de restaurarlo.
 
-El costo OSPF de una interfaz es
+\subsubsection*{Cómo calcula OSPF el costo}
+
+OSPF no cuenta saltos. A cada interfaz le asigna un costo que depende solo del ancho de banda que tiene configurado:
 \[
   \text{Costo} = \frac{10^{8}}{\text{Bandwidth (bps)}}
 \]
-con parte entera y ancho de banda de referencia de 100~Mbps, el valor por defecto de Cisco.
+El resultado se trunca a un entero y nunca baja de 1. Cisco usa 100~Mbps como referencia, así que cualquier enlace de 100~Mbps o más rápido cuesta 1. El costo de una ruta es la suma de los costos de las interfaces por las que va saliendo el paquete, router por router, y OSPF se queda con la suma más baja aunque ese camino tenga más saltos.
 
-\subsubsection*{Cálculo de costos}
-\begin{itemize}[nosep]
-  \item Enlace directo con \cmd{bandwidth 150}: $\left\lfloor \dfrac{10^{8}}{150\,000} \right\rfloor = 666$, más el costo de la interfaz LAN de Raze (\pend{valor}).
-  \item Trayecto alternativo Deadlock $\rightarrow$ Cypher $\rightarrow$ Killjoy $\rightarrow$ Raze: \pend{suma de los costos de cada enlace, según \cmd{show ip ospf interface}}.
-\end{itemize}
+En nuestra topología el enlace 1.0.0.0 es Gigabit y los enlaces 2.0.0.0, 3.0.0.0 y 4.0.0.0 son seriales (ver los supuestos de cableado en el registro de configuración). Las interfaces Gigabit quedan en costo 1. Un serial trae por defecto 1544~kbps, así que su costo es $\lfloor 10^{8} / 1\,544\,000 \rfloor = 64$. La interfaz LAN de Raze también es Gigabit y suma 1 al final de cualquier ruta hacia 172.16.64.0/21.
 
-\evid{Q5_ancho_banda/show_ip_route_deadlock.png}{Tabla de rutas de Deadlock con el ancho de banda modificado.}
-\evid{Q5_ancho_banda/tracert_annihilation_paint.png}{Traza de Annihilation a Paint Shells.}
+\subsubsection*{Antes del cambio}
+
+Desde Deadlock hay dos formas de llegar a la LAN de Raze. Por el enlace directo cuesta $64 + 1 = 65$. Por Cypher y Killjoy cuesta $1 + 64 + 64 + 1 = 130$, ya que pasa por el Gigabit hacia Cypher y por dos seriales. Gana el enlace directo.
+
+Eso es lo que se ve en Packet Tracer. \cmd{show ip ospf interface Serial0/0/0} en Deadlock marca \texttt{Cost: 64}, y \cmd{show ip route 172.16.64.0} muestra la red con métrica 65 vía 2.0.0.2. La traza desde Annhilation tiene tres saltos: 172.16.24.1 (Deadlock), 2.0.0.2 (Raze) y 172.16.64.2 (Paint Shells).
+
+\evid{Q5_ancho_banda/show_ip_route_deadlock_antes.png}{Costo del serial 2.0.0.0 y ruta a la LAN de Raze en Deadlock, antes del cambio.}
+\evid{Q5_ancho_banda/tracert_antes.png}{Traza de Annhilation a Paint Shells antes del cambio.}
+
+\subsubsection*{Con \cmd{bandwidth 150}}
+
+Con 150~kbps el costo del serial pasa a ser
+\[
+  \left\lfloor \frac{10^{8}}{150\,000} \right\rfloor = \lfloor 666{,}67 \rfloor = 666
+\]
+y el camino directo queda en $666 + 1 = 667$. El desvío por Cypher y Killjoy no usa ese enlace, así que se mantiene en 130.
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Camino desde Deadlock & Antes & Con \cmd{bandwidth 150} & Routers que atraviesa \\
+\midrule
+Directo por 2.0.0.0 & 65 & 667 & 2 \\
+Por Cypher y Killjoy & 130 & 130 & 4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El tráfico conmuta al trayecto alternativo. Apenas se aplicó el comando, \cmd{show ip ospf interface Serial0/0/0} pasó a \texttt{Cost: 666} y la tabla de Deadlock cambió la ruta a 172.16.64.0/21 por una de métrica 130 vía 1.0.0.2, saliendo por GigabitEthernet0/1. Es justo el valor calculado a mano. La traza desde Annhilation ahora tiene cinco saltos: 172.16.24.1, 1.0.0.2 (Cypher), 3.0.0.2 (Killjoy), 2.0.0.2 (Raze) y 172.16.64.2.
+
+\evid{Q5_ancho_banda/show_ip_route_deadlock.png}{Deadlock con \texttt{bandwidth 150}: costo 666 en el serial y la LAN de Raze alcanzada por Cypher con métrica 130.}
+\evid{Q5_ancho_banda/tracert_annihilation_paint.png}{Traza de Annhilation a Paint Shells con \texttt{bandwidth 150}.}
+
+En el cuarto salto aparece un detalle. El paquete entró a Raze por la interfaz 4.0.0.1, que viene de Killjoy, pero la traza muestra 2.0.0.2. Esto pasa porque un router responde el mensaje ICMP \textit{Time Exceeded} usando la IP de la interfaz por donde envía la respuesta, no la de la interfaz por donde le llegó el paquete. Para volver a 172.16.24.0/21, Raze sigue usando el enlace directo:
+
+\evid{Q5_ancho_banda/show_ip_route_raze_vuelta.png}{Ruta de Raze hacia la LAN de Deadlock mientras Deadlock tenía \texttt{bandwidth 150}.}
+
+La métrica de Raze hacia la LAN de Deadlock sigue en 65 vía 2.0.0.1, porque \cmd{bandwidth} solo cambió el costo de la interfaz de Deadlock y el Serial0/0/0 de Raze sigue costando 64. El resultado es una ruta asimétrica: la ida va por Cypher y Killjoy y la vuelta llega directo por el serial. En OSPF el costo se define por interfaz de salida, así que cada sentido de un enlace puede tener un costo distinto.
+
+\subsubsection*{Restauración}
+
+Al final se aplicó \cmd{no bandwidth} en la misma interfaz. El costo volvió a 64 de inmediato, pero la tabla de rutas tardó unos segundos de tiempo simulado en reflejarlo. Después de avanzar el reloj de Packet Tracer, la LAN de Raze volvió a aparecer con métrica 65 vía 2.0.0.2.
 
 \subsubsection*{Conclusión}
-\pend{¿el tráfico sigue por 2.0.0.0 o conmuta al trayecto alternativo? Corroborar con la tabla de rutas}
 
-\textit{Recordatorio: restaurar el ancho de banda original después de la prueba.}
+Con \cmd{bandwidth 150} el tráfico deja de usar el enlace directo 2.0.0.0 y se va por Deadlock, Cypher, Killjoy y Raze, porque ese camino suma 130 contra 667 del directo. La prueba muestra que OSPF elige por costo y no por cantidad de saltos, y que \cmd{bandwidth} no cambia la velocidad real del enlace, solo el número con el que OSPF hace sus cuentas. Por eso es una forma práctica de influir en qué camino toma el tráfico. También deja claro que el cambio afecta solo al router donde se configura, de modo que para que ambos sentidos eviten el enlace habría que aplicarlo en los dos extremos.

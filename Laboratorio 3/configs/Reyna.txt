@@ -24,15 +24,17 @@ interface GigabitEthernet0/0
  ip address 183.112.0.1 255.248.0.0
  no shutdown
 !
+router ospf 40
+ network 11.0.0.0 0.255.255.255 area 0
+ network 183.112.0.0 0.7.255.255 area 0
+ redistribute bgp 40 subnets
+!
 router bgp 40
  neighbor 12.0.0.1 remote-as 30
  network 11.0.0.0 mask 255.0.0.0
  network 12.0.0.0 mask 255.0.0.0
  network 183.112.0.0 mask 255.248.0.0
- ! --- iBGP dentro del AS 40 (PROPUESTA, validar antes de activar) ---
- ! Sage actua como route-reflector; los bordes usan next-hop-self.
- ! neighbor 11.0.0.2 remote-as 40
- ! neighbor 11.0.0.2 next-hop-self
+ redistribute ospf 40 match internal external 1 external 2
 !
 end
 write memory

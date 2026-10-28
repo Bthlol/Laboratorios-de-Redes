@@ -25,19 +25,17 @@ interface Serial0/0/0
  clock rate 64000
  no shutdown
 !
+router ospf 40
+ network 10.0.0.0 0.255.255.255 area 0
+ network 11.0.0.0 0.255.255.255 area 0
+ redistribute bgp 40 subnets
+!
 router bgp 40
  neighbor 13.0.0.2 remote-as 50
  network 10.0.0.0 mask 255.0.0.0
  network 11.0.0.0 mask 255.0.0.0
  network 13.0.0.0 mask 255.0.0.0
- ! --- iBGP dentro del AS 40 (PROPUESTA, validar antes de activar) ---
- ! Sage actua como route-reflector; los bordes usan next-hop-self.
- ! neighbor 10.0.0.1 remote-as 40
- ! neighbor 10.0.0.1 route-reflector-client
- ! neighbor 10.0.0.1 next-hop-self
- ! neighbor 11.0.0.1 remote-as 40
- ! neighbor 11.0.0.1 route-reflector-client
- ! neighbor 11.0.0.1 next-hop-self
+ redistribute ospf 40 match internal external 1 external 2
 !
 end
 write memory

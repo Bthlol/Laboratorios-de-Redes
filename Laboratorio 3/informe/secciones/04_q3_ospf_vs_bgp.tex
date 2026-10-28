@@ -1,19 +1,45 @@
 \subsection{Pregunta 3: comparativa de selección de rutas (OSPF vs.\ BGP)}
 \autor{Sebastián}
 
-\textbf{Qué debe quedar documentado:}
-\begin{itemize}[nosep]
-  \item Ruta exacta del paquete ICMP de Turret a Location server, con justificación de por qué los protocolos eligieron ese camino.
-  \item Métrica que usa OSPF dentro del AS 10 para elegir el router de salida, frente a la decisión de BGP con el atributo AS-Path.
-\end{itemize}
+Desde Turret (172.16.120.2, LAN de Killjoy) se envió un ping y una traza hacia Location server (192.168.50.2, AS 50). El ping respondió los cuatro paquetes con TTL 121, o sea que la respuesta pasó por siete routers antes de llegar a Turret.
 
-\evid{Q3_ospf_vs_bgp/ping_turret_location.png}{Ping de Turret a Location server.}
-\evid{Q3_ospf_vs_bgp/tracert_turret_location.png}{Traza de Turret a Location server.}
+\evid{Q3_ospf_vs_bgp/ping_tracert_turret_location.png}{Ping y traza de Turret a Location server.}
 
 \subsubsection*{Ruta seguida}
-\pend{listar router por router}
 
-\subsubsection*{Por qué esa ruta}
-\pend{costo OSPF hasta el router de salida y AS-Path de las rutas BGP candidatas}
+El paquete hace este recorrido:
 
-\evid{Q3_ospf_vs_bgp/show_ip_route_killjoy.png}{Tabla de rutas de Killjoy.}
+\begin{center}
+Turret $\rightarrow$ Killjoy $\rightarrow$ Fade $\rightarrow$ Viper $\rightarrow$ Omen $\rightarrow$ Sage $\rightarrow$ Brimstone $\rightarrow$ Location server
+\end{center}
+
+Pasa por el AS 10, el AS 20, el AS 30, el AS 40 y llega al AS 50. En la traza los saltos aparecen como 172.16.120.1, 6.0.0.2, 9.0.0.1, 10.0.0.1, 11.0.0.2, 13.0.0.2 y 192.168.50.2. Cada router responde el ICMP \textit{Time Exceeded} con la IP de la interfaz por la que envía esa respuesta de vuelta a Turret. Por eso Viper aparece como 9.0.0.1 (su enlace hacia Omen) y no como 7.0.0.2, que es la interfaz por donde le entró el paquete. Lo mismo pasa con Omen (10.0.0.1) y Sage (11.0.0.2). La vuelta no repite el camino de ida: Sage le contesta a Turret por Reyna, y desde ahí la respuesta sigue por Gekko, Neon y Raze. Más abajo se explica por qué.
+
+\subsubsection*{Por qué Killjoy sale directo por Fade}
+
+Killjoy es router de frontera del AS 10 y conoce 192.168.50.0/24 por dos fuentes. La primera es eBGP, porque Fade se la anuncia directamente. La segunda es OSPF, porque Raze también la aprende por su lado (desde Neon) y la mete al AS 10 como ruta externa. Cuando dos protocolos distintos ofrecen el mismo prefijo, el router no compara métricas, porque no se pueden comparar entre protocolos. Elige por distancia administrativa: eBGP tiene 20 y OSPF tiene 110. Gana eBGP, y en la tabla de Killjoy la ruta aparece como \texttt{B 192.168.50.0/24 [20/0] via 6.0.0.2}.
+
+\evid{Q3_ospf_vs_bgp/show_ip_route_killjoy.png}{Tabla de rutas de Killjoy. La ruta a Location server se aprende por eBGP desde Fade.}
+
+Por eso el paquete de Turret ni siquiera recorre el interior del AS 10. Llega a su gateway, que ya es el router de salida, y de ahí cruza directo al AS 20.
+
+\subsubsection*{Qué decide OSPF dentro del AS 10}
+
+Para los routers internos, Deadlock y Cypher, Location server es una ruta externa. Raze y Killjoy la inyectan con \cmd{redistribute bgp 10 subnets} como tipo E2, con la misma métrica externa (20). Una E2 no suma el costo del camino interno, así que las dos opciones llegan empatadas. En IOS real ese empate se rompe con el costo hasta cada router de salida (ASBR). Para Cypher, Killjoy está a 64 (un serial) y Raze a 65 (Gigabit más serial), así que debería salir por Killjoy. Para Deadlock pasa lo contrario: Raze está a 64 y Killjoy a 65.
+
+En Packet Tracer las tablas de Deadlock y Cypher muestran los dos caminos con métrica 20 y \textit{traffic share count} 1 en ambos. Es decir, el simulador no aplica ese desempate y reparte el tráfico entre los dos ASBR. Es una simplificación de Packet Tracer frente al comportamiento de un router real.
+
+\evid{Q3_ospf_vs_bgp/route_location_cypher.png}{Ruta de Cypher a Location server: dos caminos externos, por Raze y por Killjoy.}
+\evid{Q3_ospf_vs_bgp/route_location_deadlock.png}{Ruta de Deadlock a Location server.}
+
+\subsubsection*{Qué decide BGP fuera del AS 10}
+
+BGP no mira anchos de banda ni costos de enlace. Entre varias rutas a un mismo prefijo, y con los demás atributos iguales, prefiere la de AS-Path más corto, es decir, la que cruza menos sistemas autónomos. Desde el AS 10 hay dos salidas hacia Location server y las dos atraviesan los mismos AS: por Raze el camino es Neon, Gekko y Reyna (AS 20, 30 y 40), y por Killjoy es Fade, Viper y Omen (otra vez AS 20, 30 y 40). Como el largo empata, el AS-Path no es lo que define la salida. La definen la distancia administrativa en los routers de frontera y OSPF en los internos.
+
+Donde sí se nota el AS-Path es en la vuelta. Packet Tracer no soporta iBGP (``Only external neighbors are supported''), así que dentro del AS 40 usamos OSPF 40 y Omen, Reyna y Sage redistribuyen entre OSPF y BGP. Cada vez que una ruta pasa por OSPF y vuelve a BGP pierde su AS-Path original. Por eso Location server se anuncia hacia afuera con camino \texttt{40} en vez de \texttt{40 50}, y las redes del AS 10 llegan a Viper desde Omen con camino \texttt{40}, que es más corto que \texttt{20 10} por Fade. Viper prefiere entonces devolver el tráfico por Omen, y eso produce el camino de vuelta distinto que se ve en la traza.
+
+\subsubsection*{Resumen de la comparación}
+
+OSPF elige dentro de un mismo sistema autónomo y usa una métrica técnica, el costo, que sale del ancho de banda de cada interfaz. Busca el camino más rápido según esa cuenta. BGP elige entre sistemas autónomos y usa el AS-Path, que solo cuenta cuántos AS se cruzan, sin saber nada de la velocidad de los enlaces. Cuando ambos ofrecen el mismo destino, la distancia administrativa decide cuál se instala en la tabla. En esta prueba eso hizo que Killjoy usara su vecino eBGP en vez de mandar el tráfico por dentro del AS 10.
+
+Durante la integración aparecieron dos comportamientos de Packet Tracer que vale la pena dejar anotados. El primero es que, con \cmd{redistribute ospf 1} a secas, Raze y Killjoy reexportaban a BGP las rutas externas que habían aprendido de Omega. Neon y Fade las preferían porque tenían AS-Path \texttt{10}, y eso produjo un bucle entre Neon y Raze. Se corrigió con \cmd{redistribute ospf 1 match internal}, que es lo que IOS real hace por defecto. El segundo es que Killjoy instala como rutas B sus propias redes del AS 10, por ejemplo \texttt{172.16.24.0/21 [20/66] via 3.0.0.1}, después de redistribuirlas en BGP. El siguiente salto es el mismo que daría OSPF, así que el reenvío no cambia, pero en un router real esas redes aparecerían como O.

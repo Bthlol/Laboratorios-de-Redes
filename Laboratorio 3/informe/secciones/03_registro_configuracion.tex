@@ -10,6 +10,8 @@ La topología entregada contiene los dispositivos con líneas dibujadas y sin ca
   \item Los enlaces se cablearon según la tabla siguiente. Los enlaces seriales usan un módulo HWIC-2T en la ranura 0 de cada router que lo necesita, con \cmd{clock rate 64000} en el extremo DCE (el router nombrado primero).
   \item Cada LAN se conecta a la interfaz \texttt{GigabitEthernet0/0} de su router mediante el switch; Base server se conecta al switch de Cypher para quedar en la misma LAN que Tripwire y Spycam.
   \item Los nombres de los equipos son los que aparecen en la topología entregada.
+  \item Packet Tracer no soporta iBGP (al configurar un vecino del mismo AS responde ``Only external neighbors are supported''). Por eso, dentro del AS 40, Reyna, Omen y Sage corren OSPF (proceso 40) entre ellos y cada uno redistribuye entre OSPF y BGP con \cmd{redistribute bgp 40 subnets} y \cmd{redistribute ospf 40 match internal external 1 external 2}.
+  \item En Raze y Killjoy la redistribución de OSPF hacia BGP se hace con \cmd{redistribute ospf 1 match internal}. Sin el filtro, Packet Tracer reexporta hacia el AS 20 las rutas externas aprendidas de Omega y se forma un bucle entre Neon y Raze (ver pregunta 3).
 \end{itemize}
 
 \begin{center}\footnotesize

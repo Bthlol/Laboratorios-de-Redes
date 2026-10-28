@@ -37,7 +37,7 @@ router ospf 1
 !
 router bgp 10
  neighbor 6.0.0.2 remote-as 20
- redistribute ospf 1
+ redistribute ospf 1 match internal
 !
 end
 write memory

@@ -239,16 +239,20 @@ def config_router(router, lans, ifaces):
         w(f" default-router {ini}")
         w(" dns-server 0.0.0.0")
         w("!")
-    # OSPF (solo AS 10)
-    if asn == 10:
-        w("router ospf 1")
+    # OSPF: proceso 1 en el AS 10 y proceso 40 en el AS 40.
+    # Packet Tracer no soporta iBGP ("Only external neighbors are supported"),
+    # asi que dentro del AS 40 las rutas se mueven por OSPF y cada router de
+    # borde redistribuye entre OSPF y BGP, igual que Raze y Killjoy en el AS 10.
+    if asn in (10, 40):
+        w(f"router ospf {1 if asn == 10 else 40}")
         for red, vec, _, _ in enlaces_de(router):
-            if AS[vec] == 10:
+            if AS[vec] == asn:
                 w(f" network {red} 0.255.255.255 area 0")
-        w(f" network {lans[router].network_address} {wildcard(lans[router])} area 0")
+        if router in lans:
+            w(f" network {lans[router].network_address} {wildcard(lans[router])} area 0")
         # redistribucion mutua en routers de frontera (ver dudas del enunciado)
-        if any(AS[v] != 10 for _, v, _, _ in enlaces_de(router)):
-            w(" redistribute bgp 10 subnets")
+        if any(AS[v] != asn for _, v, _, _ in enlaces_de(router)):
+            w(f" redistribute bgp {asn} subnets")
         w("!")
     # BGP
     ebgp = [(r, v, mi, su) for r, v, mi, su in enlaces_de(router) if AS[v] != asn]
@@ -257,7 +261,10 @@ def config_router(router, lans, ifaces):
         for _, vec, _, su in ebgp:
             w(f" neighbor {su} remote-as {AS[vec]}")
         if asn == 10:
-            w(" redistribute ospf 1")
+            # match internal: solo se exportan las redes propias del AS 10.
+            # Sin esto Packet Tracer reexporta tambien las O E2 aprendidas de
+            # Omega, y Neon y Fade las prefieren por tener AS-Path "10" (bucle).
+            w(" redistribute ospf 1 match internal")
         else:
             for red, _, _, _ in enlaces_de(router):
                 w(f" network {red} mask {ENLACE_MASK}")
@@ -265,17 +272,9 @@ def config_router(router, lans, ifaces):
                 red = lans[router]
                 w(f" network {red.network_address} mask {red.netmask}")
         if asn == 40:
-            w(" ! --- iBGP dentro del AS 40 (PROPUESTA, validar antes de activar) ---")
-            w(" ! Sage actua como route-reflector; los bordes usan next-hop-self.")
-            if router == "Sage":
-                for ipv in ("10.0.0.1", "11.0.0.1"):
-                    w(f" ! neighbor {ipv} remote-as 40")
-                    w(f" ! neighbor {ipv} route-reflector-client")
-                    w(f" ! neighbor {ipv} next-hop-self")
-            else:
-                sage = ip_enlace("Sage", "10.0.0.0" if router == "Omen" else "11.0.0.0")
-                w(f" ! neighbor {sage} remote-as 40")
-                w(f" ! neighbor {sage} next-hop-self")
+            # Aqui si se exportan las externas: Location server llega a Sage por
+            # eBGP, entra a OSPF 40 como O E2 y Omen y Reyna la publican afuera.
+            w(" redistribute ospf 40 match internal external 1 external 2")
         w("!")
     w("end")
     w("write memory")
