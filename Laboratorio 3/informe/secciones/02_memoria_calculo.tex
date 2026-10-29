@@ -27,6 +27,15 @@ Con eso, Deadlock (3.ª subred) queda en 172.16.24.0/21, Raze (8.ª) en 172.16.6
 
 Para OSPF las redes se declaran con la wildcard, que es el inverso de la máscara ($255.255.255.255 - \text{máscara}$). Las LAN /21 usan 0.0.7.255 y los enlaces /8 usan 0.255.255.255.
 
+\subsection{Cálculo de las LAN del AS 40 y del AS 50}
+\autor{Bárbara}
+
+\textbf{Reyna.} La red base es 183.0.0.0/8 y se piden al menos $2\times(X+8)=2\times(4+8)=24$ subredes. Como $2^5=32\geq 24$, se toman 5 bits prestados y el prefijo pasa de /8 a /13, que corresponde a la máscara 255.248.0.0. Quedan 19 bits para hosts, o sea $2^{19}-2=524\,286$ direcciones útiles por subred. El salto entre subredes es $256-248=8$ en el segundo octeto, así que con el criterio adoptado la n-ésima subred empieza en 183.$(8n)$.0.0. Para $Y=14$ resulta 183.112.0.0/13, con rango útil de 183.112.0.1 a 183.119.255.254 y broadcast 183.119.255.255. El router toma 183.112.0.1 y los equipos Dismiss, Devour y Empress usan 183.112.0.2, .3 y .4.
+
+\textbf{Omen.} La red base es 4.93.0.0/16 dividida en 32 subredes distintas. Como $32=2^5$, se toman 5 bits y el prefijo pasa de /16 a /21, con máscara 255.255.248.0 y $2^{11}-2=2046$ direcciones útiles por subred. El salto es $256-248=8$ en el tercer octeto, por lo que la n-ésima subred empieza en 4.93.$(8n)$.0. Para $Y=14$ resulta 4.93.112.0/21, con rango útil de 4.93.112.1 a 4.93.119.254 y broadcast 4.93.119.255. El router toma 4.93.112.1 y Paranoia, Dark cover y Shrouded Step usan 4.93.112.2, .3 y .4.
+
+\textbf{Brimstone.} La red 192.168.50.0/24 viene dada por el enunciado, con máscara 255.255.255.0 y $2^{8}-2=254$ direcciones útiles. El rango útil va de 192.168.50.1 a 192.168.50.254 y el broadcast es 192.168.50.255. El router toma 192.168.50.1 y Location server usa 192.168.50.2.
+
 \subsection{Enlaces entre routers}
 
 El router nombrado primero en cada enlace toma la dirección \texttt{.1} y el segundo la \texttt{.2}.

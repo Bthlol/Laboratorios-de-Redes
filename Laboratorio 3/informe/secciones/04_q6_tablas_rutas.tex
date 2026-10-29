@@ -3,11 +3,15 @@
 
 \subsubsection*{Killjoy}
 \evid{Q6_tablas_rutas/show_ip_route_killjoy.png}{Salida de \cmd{show ip route} en Killjoy.}
-\pend{señalar rutas O, O E2/E1 y B}
+En Killjoy aparecen solo rutas conectadas y BGP. Las redes conectadas (C y L) son los enlaces 3.0.0.0/8, 4.0.0.0/8 y 6.0.0.0/8 y la LAN 172.16.120.0/21, con distancia 0. Las demás son rutas \texttt{B}, con distancia 20. Las redes de los otros sistemas autónomos llegan por eBGP vía 6.0.0.2 (Fade) con \texttt{[20/0]}, por ejemplo 4.93.112.0/21 y 192.168.50.0/24.
+Más llamativo es que las redes del propio AS 10 (1.0.0.0/8, 2.0.0.0/8, 172.16.24.0/21, 172.16.64.0/21 y 172.16.192.0/21) también aparecen como \texttt{B}, con \texttt{[20/65]}, \texttt{[20/128]}, \texttt{[20/66]}, \texttt{[20/65]} y \texttt{[20/65]}, vía 3.0.0.1 o 4.0.0.1. Es una particularidad de Packet Tracer:
+tras redistribuir OSPF hacia BGP en Killjoy, instala esas redes como \texttt{B} y conserva el costo de OSPF como métrica; el siguiente salto es el mismo que daría OSPF. En un router real aparecerían como \texttt{O}, y por eso en esta captura no se ven rutas \texttt{O} ni \texttt{O E2}, que sí aparecen en Sage, Deadlock y Cypher.
 
 \subsubsection*{Sage}
 \evid{Q6_tablas_rutas/show_ip_route_sage.png}{Salida de \cmd{show ip route} en Sage.}
-\pend{señalar rutas B y las demás presentes}
+En Sage aparecen 4 tipos de ruta. Las redes conectadas (C y L) son 10.0.0.0/8, 11.0.0.0/8 y 13.0.0.0/8, con distancia 0. Las rutas \texttt{O}, con \texttt{[110/2]}, son las LAN de Omen (4.93.112.0/21) y de Reyna (183.112.0.0/13):
+pertenecen al propio AS 40 y Sage las aprende por OSPF 40. Las rutas \texttt{O E2}, con \texttt{[110/20]}, son las redes de los demás sistemas autónomos (por ejemplo 1.0.0.0/8, 20.25.16.0/20 y 172.16.24.0/21): llegaron por BGP a Omen y a Reyna, que las 
+redistribuyeron a OSPF 40, y por eso son externas, con métrica fija 20. La única ruta \texttt{B} es 192.168.50.0/24, con \texttt{[20/0]} vía 13.0.0.2, que corresponde a la LAN de Brimstone y se aprende por eBGP desde el AS 50.
 
 \subsubsection*{Distancia administrativa}
 
@@ -27,4 +31,6 @@ La distancia administrativa (AD) es la confiabilidad que el router asigna a la f
 \end{tabular}
 \end{center}
 
-\pend{comentar cuáles de estos valores aparecen entre corchetes en las capturas y qué efecto tienen en Killjoy, donde hay rutas OSPF y BGP}
+
+En las capturas aparecen entre corchetes las distancias 110 (rutas \texttt{O} y \texttt{O E2}, de OSPF) y 20 (ruta \texttt{B}, de eBGP); las redes conectadas tienen distancia 0 y no llevan corchetes. Cuando un router conoce el mismo prefijo
+por más de un protocolo no puede comparar sus métricas, porque no son equivalentes, así que instala la ruta de menor distancia. En Killjoy, 192.168.50.0/24 llega por eBGP desde Fade (distancia 20) y también por OSPF (distancia 110), y gana la de BGP: \texttt{B 192.168.50.0/24 [20/0] via 6.0.0.2}.
