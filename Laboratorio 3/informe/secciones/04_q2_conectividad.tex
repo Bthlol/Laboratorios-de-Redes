@@ -7,46 +7,53 @@
 \evid{Q2_conectividad/ping_gravnet_location.png}{Ping de GravNet a Location server.}
 \evid{Q2_conectividad/tracert_gravnet_location.png}{Traza de GravNet a Location server.}
 
-\begin{tabular}{@{}cll@{}}
+\begin{center}\small
+\begin{tabular}{@{}clll@{}}
   \toprule
-  Salto & Router & IP observada \\
+  Salto & IP observada & Router & Sistema autónomo \\
   \midrule
-  1 & Deadlock & 172.16.24.1 \\
-  2 & Cypher & 1.0.0.2 \\
-  3 & Neon & 5.0.0.2 \\
-  4 & Gekko & 8.0.0.2 \\
-  5 & Reyna & 12.0.0.2 \\
-  6 & Sage & 11.0.0.2 \\
-  7 & Brimstone & 13.0.0.2 \\
-  8 & Location server & 192.168.50.2 \\
+  1 & 172.16.24.1 & Deadlock & AS 10 \\
+  2 & 1.0.0.2 & Cypher & AS 10 \\
+  3 & 5.0.0.2 & Neon & AS 20 \\
+  4 & 8.0.0.2 & Gekko & AS 30 \\
+  5 & 12.0.0.2 & Reyna & AS 40 \\
+  6 & 11.0.0.2 & Sage & AS 40 \\
+  7 & 13.0.0.2 & Brimstone & AS 50 \\
+  8 & 192.168.50.2 & Location server & -- \\
   \bottomrule
 \end{tabular}
+\end{center}
 
-\medskip
-El paquete recorre 7 routers y atraviesa los cinco sistemas autónomos de la red (AS 10, 20, 30, 40 y 50) hasta llegar al Location server. El ping responde
-sin pérdidas y el TTL alterna entre 120 y 121, lo que indica que los paquetes no siguen siempre el mismo camino: algunos atraviesan un router más que otros.
-Esto es coherente con el reparto del tráfico entre dos rutas de igual métrica que Packet Tracer muestra en Deadlock y Cypher (ver pregunta 3). Entre Cypher y Neon la traza no muestra
-routers intermedios, porque en cada salto Packet Tracer informa la IP de la interfaz por la que responde y no por la que entra el paquete (Ver preguntas 3 y 4)
+El ping responde sin pérdidas y la traza llega a Location server atravesando los cinco sistemas autónomos (AS 10, 20, 30, 40 y 50). Sin embargo, la traza no corresponde a un único camino: Cypher (salto 2) no tiene enlace con Neon (salto 3), así que esos dos saltos no pueden ser consecutivos en un mismo recorrido.
 
+Lo que ocurre es que Deadlock reparte el tráfico entre dos rutas externas \texttt{O E2} empatadas hacia 192.168.50.0/24, una por Raze (2.0.0.2) y otra por Cypher (1.0.0.2), como se explica en la pregunta 3. Cada sonda del \cmd{tracert} es un paquete distinto, de modo que distintas sondas se fueron por caminos distintos:
+
+\begin{itemize}[nosep]
+  \item \textbf{Camino por Raze (7 routers):} Deadlock $\rightarrow$ Raze $\rightarrow$ Neon $\rightarrow$ Gekko $\rightarrow$ Reyna $\rightarrow$ Sage $\rightarrow$ Brimstone. A él corresponden los saltos 3 a 7 de la traza. Raze no aparece porque la sonda del salto 2 se fue por el otro camino.
+  \item \textbf{Camino por Cypher (8 routers):} Deadlock $\rightarrow$ Cypher $\rightarrow$ Killjoy $\rightarrow$ Fade $\rightarrow$ Viper $\rightarrow$ Omen $\rightarrow$ Sage $\rightarrow$ Brimstone. A él corresponde el salto 2. Desde Cypher hasta Omen es el mismo recorrido que sigue el tráfico de Spycam, más abajo.
+\end{itemize}
+
+El ping lo confirma: el TTL de las respuestas alterna entre 121 y 120, es decir, $128-7$ y $128-8$, de modo que las respuestas también se reparten entre dos caminos que difieren en un router. Además, las direcciones de la tabla corresponden a la interfaz por la que cada router \emph{envía} su respuesta hacia GravNet, no a la interfaz por la que recibió la sonda (ver preguntas 3 y 4).
 
 \subsubsection*{Spycam $\rightarrow$ Shrouded Step}
 \evid{Q2_conectividad/ping_spycam_shrouded.png}{Ping de Spycam a Shrouded Step.}
 \evid{Q2_conectividad/tracert_spycam_shrouded.png}{Traza de Spycam a Shrouded Step.}
 
-\begin{tabular}{@{}cll@{}}
+\begin{center}\small
+\begin{tabular}{@{}clll@{}}
   \toprule
-  Salto & Router & IP observada \\
+  Salto & IP observada & Router & Sistema autónomo \\
   \midrule
-  1 & Cypher & 172.16.192.1 \\
-  2 & Killjoy & 3.0.0.2 \\
-  3 & Fade & 6.0.0.2 \\
-  4 & Viper & 7.0.0.2 \\
-  5 & Omen & 9.0.0.2 \\
-  6 & Shrouded Step & 4.93.112.4 \\
+  1 & 172.16.192.1 & Cypher & AS 10 \\
+  2 & 3.0.0.2 & Killjoy & AS 10 \\
+  3 & 6.0.0.2 & Fade & AS 20 \\
+  4 & 7.0.0.2 & Viper & AS 30 \\
+  5 & 9.0.0.2 & Omen & AS 40 \\
+  6 & 4.93.112.4 & Shrouded Step & -- \\
   \bottomrule
 \end{tabular}
+\end{center}
 
-\medskip
-El paquete sale del AS 10 por Killjoy, cruza Fade (AS 20) y Viper (AS 30) y entra al AS 40 por Omen, para llegar hasta Shrouded Step en 6 saltos. Killjoy prefiere esta salida porque 
-aprende la red de la LAN de Omen por eBGP desde Fade, con distancia administrativa 20, mientras que la misma red también le llega por OSPF con distancia 110. El router instala la de 
-menor distancia (Ver la tabla de Killjoy en la pregunta 6).
+El paquete sale del AS 10 por Killjoy, cruza Fade (AS 20) y Viper (AS 30) y entra al AS 40 por Omen, para llegar hasta Shrouded Step en 6 saltos. Killjoy prefiere esta salida porque
+aprende la LAN de Omen por eBGP desde Fade, con distancia administrativa 20, mientras que la misma red también le llega por OSPF con distancia 110. El router instala la de 
+menor distancia (ver la tabla de Killjoy en la pregunta 6).

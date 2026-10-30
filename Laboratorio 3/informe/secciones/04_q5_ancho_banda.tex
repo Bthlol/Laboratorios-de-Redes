@@ -1,7 +1,7 @@
 \subsection{Pregunta 5: impacto del ancho de banda en las métricas OSPF}
 \autor{Sebastián}
 
-En esta pregunta se cambió el ancho de banda configurado en el enlace serial entre Deadlock y Raze (red 2.0.0.0) y se revisó si el tráfico de Annhilation hacia Paint Shells seguía usando ese enlace o se iba por otro camino. La prueba se hizo en tres momentos: con el enlace en su valor por defecto, con \cmd{bandwidth 150} aplicado en la interfaz Serial0/0/0 de Deadlock y después de restaurarlo.
+En esta pregunta se cambió el ancho de banda configurado en el enlace serial entre Deadlock y Raze (red 2.0.0.0) y se revisó si el tráfico de Annihilation hacia Paint Shells seguía usando ese enlace o se iba por otro camino. La prueba se hizo en tres momentos: con el enlace en su valor por defecto, con \cmd{bandwidth 150} aplicado en la interfaz Serial0/0/0 de Deadlock y después de restaurarlo.
 
 \subsubsection*{Cómo calcula OSPF el costo}
 
@@ -17,10 +17,10 @@ En nuestra topología el enlace 1.0.0.0 es Gigabit y los enlaces 2.0.0.0, 3.0.0.
 
 Desde Deadlock hay dos formas de llegar a la LAN de Raze. Por el enlace directo cuesta $64 + 1 = 65$. Por Cypher y Killjoy cuesta $1 + 64 + 64 + 1 = 130$, ya que pasa por el Gigabit hacia Cypher y por dos seriales. Gana el enlace directo.
 
-Eso es lo que se ve en Packet Tracer. \cmd{show ip ospf interface Serial0/0/0} en Deadlock marca \texttt{Cost: 64}, y \cmd{show ip route 172.16.64.0} muestra la red con métrica 65 vía 2.0.0.2. La traza desde Annhilation tiene tres saltos: 172.16.24.1 (Deadlock), 2.0.0.2 (Raze) y 172.16.64.2 (Paint Shells).
+Eso es lo que se ve en Packet Tracer. \cmd{show ip ospf interface Serial0/0/0} en Deadlock marca \texttt{Cost: 64}, y \cmd{show ip route 172.16.64.0} muestra la red con métrica 65 vía 2.0.0.2. La traza desde Annihilation tiene tres saltos: 172.16.24.1 (Deadlock), 2.0.0.2 (Raze) y 172.16.64.2 (Paint Shells).
 
 \evid{Q5_ancho_banda/show_ip_route_deadlock_antes.png}{Costo del serial 2.0.0.0 y ruta a la LAN de Raze en Deadlock, antes del cambio.}
-\evid{Q5_ancho_banda/tracert_antes.png}{Traza de Annhilation a Paint Shells antes del cambio.}
+\evid{Q5_ancho_banda/tracert_antes.png}{Traza de Annihilation a Paint Shells antes del cambio.}
 
 \subsubsection*{Con \cmd{bandwidth 150}}
 
@@ -41,10 +41,10 @@ Por Cypher y Killjoy & 130 & 130 & 4 \\
 \end{tabular}
 \end{center}
 
-El tráfico conmuta al trayecto alternativo. Apenas se aplicó el comando, \cmd{show ip ospf interface Serial0/0/0} pasó a \texttt{Cost: 666} y la tabla de Deadlock cambió la ruta a 172.16.64.0/21 por una de métrica 130 vía 1.0.0.2, saliendo por GigabitEthernet0/1. Es justo el valor calculado a mano. La traza desde Annhilation ahora tiene cinco saltos: 172.16.24.1, 1.0.0.2 (Cypher), 3.0.0.2 (Killjoy), 2.0.0.2 (Raze) y 172.16.64.2.
+El tráfico conmuta al trayecto alternativo. Apenas se aplicó el comando, \cmd{show ip ospf interface Serial0/0/0} pasó a \texttt{Cost: 666} y la tabla de Deadlock cambió la ruta a 172.16.64.0/21 por una de métrica 130 vía 1.0.0.2, saliendo por GigabitEthernet0/1. Es justo el valor calculado a mano. La traza desde Annihilation ahora tiene cinco saltos: 172.16.24.1, 1.0.0.2 (Cypher), 3.0.0.2 (Killjoy), 2.0.0.2 (Raze) y 172.16.64.2.
 
 \evid{Q5_ancho_banda/show_ip_route_deadlock.png}{Deadlock con \texttt{bandwidth 150}: costo 666 en el serial y la LAN de Raze alcanzada por Cypher con métrica 130.}
-\evid{Q5_ancho_banda/tracert_annihilation_paint.png}{Traza de Annhilation a Paint Shells con \texttt{bandwidth 150}.}
+\evid{Q5_ancho_banda/tracert_annihilation_paint.png}{Traza de Annihilation a Paint Shells con \texttt{bandwidth 150}.}
 
 En el cuarto salto aparece un detalle. El paquete entró a Raze por la interfaz 4.0.0.1, que viene de Killjoy, pero la traza muestra 2.0.0.2. Esto pasa porque un router responde el mensaje ICMP \textit{Time Exceeded} usando la IP de la interfaz por donde envía la respuesta, no la de la interfaz por donde le llegó el paquete. Para volver a 172.16.24.0/21, Raze sigue usando el enlace directo:
 
