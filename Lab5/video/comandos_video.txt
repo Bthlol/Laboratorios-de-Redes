@@ -1,0 +1,51 @@
+===================== ANTES DE GRABAR (terminal normal) =====================
+cd ~/lab5
+sudo rm -rf registros
+sudo -v
+
+===================== ESCENA 1 - Topologia y codigo =========================
+python3 lab5_simulacion.py --dry-run
+# (abrir lab5_simulacion.py en el editor y recorrer: Topologia, addAccessPoint con stp,
+#  movilidad, ControlTraspaso)
+
+===================== ESCENA 2 - Movilidad y ping (P2) ======================
+sudo mn -c
+sudo python3 lab5_simulacion.py --interferencia --monitor sta3 --cada 1
+
+# --- en la CLI (mininet-wifi>), apenas se abra:
+sta2 ping -D -i 0.2 sta3
+# dejar correr ~50 s mirando el plano; luego Ctrl + C
+
+===================== ESCENA 3 - AP de sta3 (P3), misma ejecucion ===========
+sta3 iw dev sta3-wlan0 link
+sh grep -E "== t=|SSID|signal|Not connected" registros/sta3_cada1*.log | tail -n 60
+sh cat registros/traspasos_*.log
+exit
+
+===================== ESCENA 4 - Falla de enlace (P2) =======================
+sudo mn -c
+sudo python3 lab5_simulacion.py --interferencia
+
+# --- en la CLI, esperar ~35 s despues de que se abra (t ~ 45 s):
+sh ovs-appctl stp/show ap3
+sta1 ping -D -i 0.2 sta4 > registros/ping_falla.txt &
+link ap0 ap4 down
+
+# --- esperar ~20 s:
+sh ovs-appctl stp/show ap3
+sh ovs-appctl stp/show ap4
+sh pkill -INT ping
+sh tail -n 5 registros/ping_falla.txt
+
+# --- nodo central caido:
+link ap0 ap1 down
+link ap0 ap5 down
+link ap0 ap7 down
+sta1 ping -c 5 sta4
+exit
+
+===================== ESCENA 5 - Throughput (P4) ============================
+sudo mn -c
+sudo python3 lab5_simulacion.py --interferencia --canales 1611 --iperf 34.5 --duracion 45 --sin-grafico
+cat registros/iperf_1611_*.txt
+# (mostrar la tabla de la P4 del informe)
