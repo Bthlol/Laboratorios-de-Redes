@@ -1,0 +1,987 @@
+== t=5s
+Not connected.
+== t=6s
+Not connected.
+== t=7s
+Not connected.
+== t=8s
+Not connected.
+== t=9s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 981 bytes (21 packets)
+	TX: 306 bytes (4 packets)
+	signal: -16 dBm
+	tx bitrate: 2.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=10s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 2135 bytes (44 packets)
+	TX: 518 bytes (6 packets)
+	signal: -16 dBm
+	tx bitrate: 9.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=11s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 3381 bytes (68 packets)
+	TX: 822 bytes (9 packets)
+	signal: -16 dBm
+	tx bitrate: 11.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=12s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 4323 bytes (89 packets)
+	TX: 822 bytes (9 packets)
+	signal: -16 dBm
+	tx bitrate: 11.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=13s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 5265 bytes (110 packets)
+	TX: 822 bytes (9 packets)
+	signal: -16 dBm
+	tx bitrate: 11.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=14s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 7435 bytes (144 packets)
+	TX: 1434 bytes (15 packets)
+	signal: -16 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=15s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 16277 bytes (181 packets)
+	TX: 2014 bytes (20 packets)
+	signal: -29 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=16s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 19553 bytes (215 packets)
+	TX: 2594 bytes (25 packets)
+	signal: -44 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=17s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 21551 bytes (243 packets)
+	TX: 3174 bytes (30 packets)
+	signal: -52 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=18s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 23073 bytes (269 packets)
+	TX: 3754 bytes (35 packets)
+	signal: -57 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=19s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 31045 bytes (305 packets)
+	TX: 4394 bytes (41 packets)
+	signal: -62 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=20s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 33557 bytes (333 packets)
+	TX: 4974 bytes (46 packets)
+	signal: -65 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=22s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 35653 bytes (365 packets)
+	TX: 5670 bytes (52 packets)
+	signal: -68 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=23s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 43071 bytes (403 packets)
+	TX: 6338 bytes (58 packets)
+	signal: -70 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=24s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 44877 bytes (432 packets)
+	TX: 6918 bytes (63 packets)
+	signal: -72 dBm
+	rx bitrate: 54.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=25s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 46487 bytes (459 packets)
+	TX: 7498 bytes (68 packets)
+	signal: -74 dBm
+	rx bitrate: 48.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=26s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 49881 bytes (488 packets)
+	TX: 8078 bytes (73 packets)
+	signal: -76 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=27s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 51599 bytes (516 packets)
+	TX: 8658 bytes (78 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=28s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 53209 bytes (543 packets)
+	TX: 9238 bytes (83 packets)
+	signal: -79 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=29s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 56433 bytes (570 packets)
+	TX: 9818 bytes (88 packets)
+	signal: -80 dBm
+	rx bitrate: 18.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=30s
+Connected to 02:00:00:00:05:00 (on sta4-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 66951 bytes (608 packets)
+	TX: 10398 bytes (93 packets)
+	signal: -81 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 24.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=31s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 1127 bytes (21 packets)
+	TX: 426 bytes (5 packets)
+	signal: -78 dBm
+	rx bitrate: 2.0 MBit/s
+	tx bitrate: 9.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=32s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 3113 bytes (51 packets)
+	TX: 1006 bytes (10 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=33s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 6763 bytes (87 packets)
+	TX: 1702 bytes (16 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=34s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 8619 bytes (117 packets)
+	TX: 2282 bytes (21 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=35s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 10229 bytes (144 packets)
+	TX: 2862 bytes (26 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=36s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 11751 bytes (170 packets)
+	TX: 3442 bytes (31 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=37s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 13361 bytes (197 packets)
+	TX: 4110 bytes (37 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=38s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 14883 bytes (223 packets)
+	TX: 4690 bytes (42 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=39s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 16493 bytes (250 packets)
+	TX: 5270 bytes (47 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=40s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 18015 bytes (276 packets)
+	TX: 5850 bytes (52 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=41s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 19625 bytes (303 packets)
+	TX: 6430 bytes (57 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=42s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 21147 bytes (329 packets)
+	TX: 7010 bytes (62 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=43s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 22757 bytes (356 packets)
+	TX: 7590 bytes (67 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=44s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 24395 bytes (383 packets)
+	TX: 8286 bytes (73 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=45s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 25917 bytes (409 packets)
+	TX: 8866 bytes (78 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=46s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 27439 bytes (435 packets)
+	TX: 9446 bytes (83 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=47s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 29207 bytes (464 packets)
+	TX: 10026 bytes (88 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=48s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 30729 bytes (490 packets)
+	TX: 10606 bytes (93 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=49s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 32497 bytes (519 packets)
+	TX: 11186 bytes (98 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=50s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 34107 bytes (546 packets)
+	TX: 11766 bytes (103 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=51s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 35629 bytes (572 packets)
+	TX: 12346 bytes (108 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=52s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 37151 bytes (598 packets)
+	TX: 12926 bytes (113 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=53s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 38673 bytes (624 packets)
+	TX: 13506 bytes (118 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=54s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 40357 bytes (651 packets)
+	TX: 14202 bytes (124 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=55s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 42047 bytes (679 packets)
+	TX: 14842 bytes (130 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=56s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 43657 bytes (706 packets)
+	TX: 15422 bytes (135 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=57s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 45241 bytes (733 packets)
+	TX: 16002 bytes (140 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=58s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 46763 bytes (759 packets)
+	TX: 16582 bytes (145 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=59s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 48285 bytes (785 packets)
+	TX: 17162 bytes (150 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=60s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 49807 bytes (811 packets)
+	TX: 17742 bytes (155 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=61s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 51593 bytes (840 packets)
+	TX: 18322 bytes (160 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=62s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 53367 bytes (869 packets)
+	TX: 18902 bytes (165 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=63s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 54997 bytes (896 packets)
+	TX: 19482 bytes (170 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=64s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 58389 bytes (931 packets)
+	TX: 20266 bytes (177 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=65s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 60387 bytes (959 packets)
+	TX: 20846 bytes (182 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=67s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 61971 bytes (986 packets)
+	TX: 21426 bytes (187 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=68s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 63493 bytes (1012 packets)
+	TX: 22006 bytes (192 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=69s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 65279 bytes (1041 packets)
+	TX: 22586 bytes (197 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=70s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 66949 bytes (1069 packets)
+	TX: 23226 bytes (203 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=71s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 68471 bytes (1095 packets)
+	TX: 23806 bytes (208 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=72s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 69993 bytes (1121 packets)
+	TX: 24386 bytes (213 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=73s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 71515 bytes (1147 packets)
+	TX: 24966 bytes (218 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=74s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 73037 bytes (1173 packets)
+	TX: 25546 bytes (223 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=75s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 74559 bytes (1199 packets)
+	TX: 26126 bytes (228 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=76s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 76081 bytes (1225 packets)
+	TX: 26706 bytes (233 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=77s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 77691 bytes (1252 packets)
+	TX: 27286 bytes (238 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=78s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 79213 bytes (1278 packets)
+	TX: 27866 bytes (243 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=79s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 80735 bytes (1304 packets)
+	TX: 28446 bytes (248 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=80s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 82373 bytes (1331 packets)
+	TX: 29142 bytes (254 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=81s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 83983 bytes (1358 packets)
+	TX: 29722 bytes (259 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=82s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 85505 bytes (1384 packets)
+	TX: 30302 bytes (264 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=83s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 87027 bytes (1410 packets)
+	TX: 30882 bytes (269 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=84s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 88549 bytes (1436 packets)
+	TX: 31462 bytes (274 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 54.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=85s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 90071 bytes (1462 packets)
+	TX: 32042 bytes (279 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=86s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 91593 bytes (1488 packets)
+	TX: 32622 bytes (284 packets)
+	signal: -77 dBm
+	rx bitrate: 24.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=87s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 93115 bytes (1514 packets)
+	TX: 33202 bytes (289 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=88s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 94637 bytes (1540 packets)
+	TX: 33782 bytes (294 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 48.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=89s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 96159 bytes (1566 packets)
+	TX: 34362 bytes (299 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=90s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 97333 bytes (1589 packets)
+	TX: 34594 bytes (301 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=91s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 98275 bytes (1610 packets)
+	TX: 34594 bytes (301 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+== t=92s
+Connected to 02:00:00:00:0a:00 (on sta4-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 99129 bytes (1629 packets)
+	TX: 34594 bytes (301 packets)
+	signal: -77 dBm
+	rx bitrate: 36.0 MBit/s
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100

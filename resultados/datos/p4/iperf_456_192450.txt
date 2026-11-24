@@ -1,0 +1,19 @@
+Canales: 456 | interferencia: True | t inicio iperf: 34.5 s | duracion: 4.0 s
+== antes (t=34.5 s)
+   sta2: SSID: ap0-ssid, signal: -38 dBm
+   sta3: SSID: ap0-ssid, signal: -54 dBm
+------------------------------------------------------------
+Client connecting to 10.0.0.3, TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 37214 connected with 10.0.0.3 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-1.0000 sec  2.63 MBytes  22.0 Mbits/sec
+[  1] 1.0000-2.0000 sec  2.00 MBytes  16.8 Mbits/sec
+[  1] 2.0000-3.0000 sec  1.62 MBytes  13.6 Mbits/sec
+[  1] 3.0000-4.0000 sec  1.50 MBytes  12.6 Mbits/sec
+[  1] 4.0000-8.2665 sec  0.125 MBytes  0.246 Mbits/sec
+[  1] 0.0000-8.2665 sec  7.88 MBytes  7.99 Mbits/sec
+== despues (t=43.0 s)
+   sta2: SSID: ap5-ssid, signal: -84 dBm
+   sta3: SSID: ap0-ssid, signal: -65 dBm

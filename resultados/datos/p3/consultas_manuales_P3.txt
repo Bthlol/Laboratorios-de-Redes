@@ -1,0 +1,294 @@
+benyi@benyi-Vostro-3405:~/lab5$ sudo mn -c
+sudo python3 lab5_simulacion.py --interferencia --monitor sta3 --cada 5
+*** Removing excess controllers/ofprotocols/ofdatapaths/pings/noxes
+killall controller ofprotocol ofdatapath ping nox_core lt-nox_core ovs-openflowd ovs-controller ovs-testcontroller udpbwtest mnexec ivs ryu-manager  2> /dev/null
+killall -9 controller ofprotocol ofdatapath ping nox_core lt-nox_core ovs-openflowd ovs-controller ovs-testcontroller udpbwtest mnexec ivs ryu-manager  2> /dev/null
+pkill -9 -f "sudo mnexec"
+*** Removing junk from /tmp
+rm -f /tmp/vconn* /tmp/vlogs* /tmp/*.out /tmp/*.log
+*** Removing old X11 tunnels
+*** Removing excess kernel datapaths
+ps ax | egrep -o 'dp[0-9]+' | sed 's/dp/nl:/'
+***  Removing OVS datapaths
+ovs-vsctl --timeout=1 list-br
+ovs-vsctl --timeout=1 list-br
+*** Removing all links of the pattern foo-ethX
+ip link show | egrep -o '([-_.[:alnum:]]+-eth[[:digit:]]+)'
+ip link show
+*** Killing stale mininet node processes
+pkill -9 -f mininet:
+*** Shutting down stale tunnels
+pkill -9 -f Tunnel=Ethernet
+pkill -9 -f .ssh/mn
+rm -f ~/.ssh/mn/*
+*** Cleanup complete.
+
+*** Removing WiFi module and Configurations
+*** Creando puntos de acceso
+*** Creando estaciones
+*** Modelo de propagacion: logDistance, exp=3.9
+*** Configurando nodos
+*** Connecting to wmediumd server /var/run/wmediumd.sock
+*** Enlaces cableados entre APs (lemniscata)
+*** Movilidad (inicia en t=15 s)
+*** Iniciando red
+*** Control de traspaso: senal mas fuerte con histeresis de 3.0 dB
+*** Eventos de asociacion en /home/benyi/lab5/registros/traspasos_190645.log
+*** Referencia de tiempo: t=0 s corresponde al instante UNIX 1795471599.620
+*** Registrando enlace de sta3 cada 5.0 s en /home/benyi/lab5/registros/sta3_cada5.0s_190645.log
+
+Grupo G=14 -> N=8 nodos, X=4, exponente=3.9
+Rango estimado de cobertura: 83.3 m (canal 1) a 82.4 m (canal 11)
+
+Puntos de acceso:
+  ap0  pos=(0, 0)       canal=1  rango=83.3 m
+  ap1  pos=(-46, -37)   canal=4  rango=83.0 m
+  ap2  pos=(-113, -35)  canal=7  rango=82.8 m
+  ap3  pos=(-113, 35)   canal=10 rango=82.5 m
+  ap4  pos=(-46, 37)    canal=2  rango=83.2 m
+  ap5  pos=(61, -43)    canal=5  rango=82.9 m
+  ap6  pos=(130, 0)     canal=8  rango=82.7 m
+  ap7  pos=(61, 43)     canal=11 rango=82.4 m
+Enlaces cableados: ap0-ap1, ap1-ap2, ap2-ap3, ap3-ap4, ap4-ap0, ap0-ap5, ap5-ap6, ap6-ap7, ap7-ap0
+
+Estaciones:
+  sta1 estatica en (-64, 5) -> APs en rango: ['ap0', 'ap1', 'ap2', 'ap3', 'ap4'] (AP mas cercano: ap4)
+  sta2 (-212, 0) -> (229, 0) en 40 s (t=15..55 s)
+       zonas recorridas: [t+0.0s] {} [t+2.2s] {ap2} [t+2.3s] {ap2,ap3} [t+8.3s] {ap2,ap3,ap4} [t+8.4s] {ap1,ap2,ap3,ap4} [t+11.7s] {ap0,ap1,ap2,ap3,ap4} [t+15.8s] {ap0,ap1,ap4} [t+18.4s] {ap0,ap1,ap4,ap5,ap7} [t+21.8s] {ap0,ap4,ap5,ap7} [t+21.9s] {ap0,ap5,ap7} [t+23.6s] {ap0,ap5,ap6,ap7} [t+26.8s] {ap5,ap6,ap7} [t+31.2s] {ap6} [t+38.6s] {}
+  sta3 (-61, 43) -> (61, -43) en 45 s (t=15..60 s)
+       zonas recorridas: [t+0.0s] {ap0,ap1,ap3,ap4} [t+10.9s] {ap0,ap1,ap4} [t+17.1s] {ap0,ap1,ap4,ap7} [t+20.0s] {ap0,ap1,ap4,ap5,ap7} [t+29.8s] {ap0,ap1,ap5,ap7} [t+35.9s] {ap0,ap5,ap7} [t+43.1s] {ap0,ap5} [t+44.0s] {ap0,ap5,ap6}
+  sta4 (0, 0) -> (63, -5) en 20 s (t=15..35 s)
+       zonas recorridas: [t+0.0s] {ap0,ap1,ap4,ap5,ap7} [t+8.8s] {ap0,ap1,ap5,ap7} [t+9.4s] {ap0,ap5,ap7} [t+15.1s] {ap0,ap5,ap6,ap7}
+  sta5 (-23, -94) -> (-23, 94) en 70 s (t=15..85 s)
+       zonas recorridas: [t+0.0s] {ap1} [t+5.2s] {ap0,ap1} [t+19.1s] {ap0,ap1,ap4} [t+51.0s] {ap0,ap4} [t+64.9s] {ap4}
+
+*** Iniciando CLI de Mininet-WiFi
+*** Starting CLI:
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Connected to 02:00:00:00:09:00 (on sta3-wlan0)
+	SSID: ap4-ssid
+	freq: 2417.0
+	RX: 31301 bytes (295 packets)
+	TX: 702 bytes (8 packets)
+	signal: -44 dBm
+	tx bitrate: 36.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Connected to 02:00:00:00:05:00 (on sta3-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 3983 bytes (32 packets)
+	TX: 310 bytes (4 packets)
+	signal: -57 dBm
+	tx bitrate: 2.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Connected to 02:00:00:00:05:00 (on sta3-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 13755 bytes (245 packets)
+	TX: 398 bytes (5 packets)
+	signal: -68 dBm
+	tx bitrate: 6.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+mininet-wifi> exit
+*** Deteniendo red
+*** Stopping 0 controllers
+
+*** Stopping 14 links
+..............
+*** Stopping switches/access points
+ap0 ap1 ap2 ap3 ap4 ap5 ap6 ap7 
+*** Stopping nodes
+sta1 sta2 sta3 sta4 sta5 
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/tkinter/__init__.py", line 2096, in __call__
+    return self.func(*args)
+           ~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.14/tkinter/__init__.py", line 879, in callit
+    func(*args, **kw)
+    ~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/backends/_backend_tk.py", line 302, in idle_draw
+    self.draw()
+    ~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/matplotlib/backends/backend_tkagg.py", line 10, in draw
+    super().draw()
+    ~~~~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/matplotlib/backends/backend_agg.py", line 382, in draw
+    self.figure.draw(self.renderer)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/artist.py", line 94, in draw_wrapper
+    result = draw(artist, renderer, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+  File "/usr/lib/python3/dist-packages/matplotlib/figure.py", line 3257, in draw
+    mimage._draw_list_compositing_images(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        renderer, self, artists, self.suppressComposite)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/image.py", line 134, in _draw_list_compositing_images
+    a.draw(renderer)
+    ~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+  File "/usr/lib/python3/dist-packages/matplotlib/axes/_base.py", line 3226, in draw
+    mimage._draw_list_compositing_images(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        renderer, self, artists, self.get_figure(root=True).suppressComposite)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/image.py", line 134, in _draw_list_compositing_images
+    a.draw(renderer)
+    ~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+  File "/usr/lib/python3/dist-packages/matplotlib/text.py", line 1990, in draw
+    if not self.get_visible() or not self._check_xy(renderer):
+                                     ~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/text.py", line 1590, in _check_xy
+    xy_pixel = self._get_position_xy(renderer)
+  File "/usr/lib/python3/dist-packages/matplotlib/text.py", line 1581, in _get_position_xy
+    return self._get_xy(renderer, self.xy, self.xycoords)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/text.py", line 1478, in _get_xy
+    return self._get_xy_transform(renderer, coords).transform((x, y))
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/matplotlib/text.py", line 1511, in _get_xy_transform
+    return self.axes.transData
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'transData'
+
+*** Removing WiFi module and Configurations
+*** Killing mac80211_hwsim
+
+*** Done
+benyi@benyi-Vostro-3405:~/lab5$ 
+
+
+
+
+
+
+benyi@benyi-Vostro-3405:~/lab5$ sudo mn -c
+sudo python3 lab5_simulacion.py --interferencia --monitor sta3 --cada 3
+*** Removing excess controllers/ofprotocols/ofdatapaths/pings/noxes
+killall controller ofprotocol ofdatapath ping nox_core lt-nox_core ovs-openflowd ovs-controller ovs-testcontroller udpbwtest mnexec ivs ryu-manager  2> /dev/null
+killall -9 controller ofprotocol ofdatapath ping nox_core lt-nox_core ovs-openflowd ovs-controller ovs-testcontroller udpbwtest mnexec ivs ryu-manager  2> /dev/null
+pkill -9 -f "sudo mnexec"
+*** Removing junk from /tmp
+rm -f /tmp/vconn* /tmp/vlogs* /tmp/*.out /tmp/*.log
+*** Removing old X11 tunnels
+*** Removing excess kernel datapaths
+ps ax | egrep -o 'dp[0-9]+' | sed 's/dp/nl:/'
+***  Removing OVS datapaths
+ovs-vsctl --timeout=1 list-br
+ovs-vsctl --timeout=1 list-br
+*** Removing all links of the pattern foo-ethX
+ip link show | egrep -o '([-_.[:alnum:]]+-eth[[:digit:]]+)'
+ip link show
+*** Killing stale mininet node processes
+pkill -9 -f mininet:
+*** Shutting down stale tunnels
+pkill -9 -f Tunnel=Ethernet
+pkill -9 -f .ssh/mn
+rm -f ~/.ssh/mn/*
+*** Cleanup complete.
+
+*** Removing WiFi module and Configurations
+*** Creando puntos de acceso
+*** Creando estaciones
+*** Modelo de propagacion: logDistance, exp=3.9
+*** Configurando nodos
+*** Connecting to wmediumd server /var/run/wmediumd.sock
+*** Enlaces cableados entre APs (lemniscata)
+*** Movilidad (inicia en t=15 s)
+*** Iniciando red
+*** Control de traspaso: senal mas fuerte con histeresis de 3.0 dB
+*** Eventos de asociacion en /home/benyi/lab5/registros/traspasos_190908.log
+*** Referencia de tiempo: t=0 s corresponde al instante UNIX 1795471742.813
+*** Registrando enlace de sta3 cada 3.0 s en /home/benyi/lab5/registros/sta3_cada3.0s_190908.log
+
+Grupo G=14 -> N=8 nodos, X=4, exponente=3.9
+Rango estimado de cobertura: 83.3 m (canal 1) a 82.4 m (canal 11)
+
+Puntos de acceso:
+  ap0  pos=(0, 0)       canal=1  rango=83.3 m
+  ap1  pos=(-46, -37)   canal=4  rango=83.0 m
+  ap2  pos=(-113, -35)  canal=7  rango=82.8 m
+  ap3  pos=(-113, 35)   canal=10 rango=82.5 m
+  ap4  pos=(-46, 37)    canal=2  rango=83.2 m
+  ap5  pos=(61, -43)    canal=5  rango=82.9 m
+  ap6  pos=(130, 0)     canal=8  rango=82.7 m
+  ap7  pos=(61, 43)     canal=11 rango=82.4 m
+Enlaces cableados: ap0-ap1, ap1-ap2, ap2-ap3, ap3-ap4, ap4-ap0, ap0-ap5, ap5-ap6, ap6-ap7, ap7-ap0
+
+Estaciones:
+  sta1 estatica en (-64, 5) -> APs en rango: ['ap0', 'ap1', 'ap2', 'ap3', 'ap4'] (AP mas cercano: ap4)
+  sta2 (-212, 0) -> (229, 0) en 40 s (t=15..55 s)
+       zonas recorridas: [t+0.0s] {} [t+2.2s] {ap2} [t+2.3s] {ap2,ap3} [t+8.3s] {ap2,ap3,ap4} [t+8.4s] {ap1,ap2,ap3,ap4} [t+11.7s] {ap0,ap1,ap2,ap3,ap4} [t+15.8s] {ap0,ap1,ap4} [t+18.4s] {ap0,ap1,ap4,ap5,ap7} [t+21.8s] {ap0,ap4,ap5,ap7} [t+21.9s] {ap0,ap5,ap7} [t+23.6s] {ap0,ap5,ap6,ap7} [t+26.8s] {ap5,ap6,ap7} [t+31.2s] {ap6} [t+38.6s] {}
+  sta3 (-61, 43) -> (61, -43) en 45 s (t=15..60 s)
+       zonas recorridas: [t+0.0s] {ap0,ap1,ap3,ap4} [t+10.9s] {ap0,ap1,ap4} [t+17.1s] {ap0,ap1,ap4,ap7} [t+20.0s] {ap0,ap1,ap4,ap5,ap7} [t+29.8s] {ap0,ap1,ap5,ap7} [t+35.9s] {ap0,ap5,ap7} [t+43.1s] {ap0,ap5} [t+44.0s] {ap0,ap5,ap6}
+  sta4 (0, 0) -> (63, -5) en 20 s (t=15..35 s)
+       zonas recorridas: [t+0.0s] {ap0,ap1,ap4,ap5,ap7} [t+8.8s] {ap0,ap1,ap5,ap7} [t+9.4s] {ap0,ap5,ap7} [t+15.1s] {ap0,ap5,ap6,ap7}
+  sta5 (-23, -94) -> (-23, 94) en 70 s (t=15..85 s)
+       zonas recorridas: [t+0.0s] {ap1} [t+5.2s] {ap0,ap1} [t+19.1s] {ap0,ap1,ap4} [t+51.0s] {ap0,ap4} [t+64.9s] {ap4}
+
+*** Iniciando CLI de Mininet-WiFi
+*** Starting CLI:
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Connected to 02:00:00:00:09:00 (on sta3-wlan0)
+	SSID: ap4-ssid
+	freq: 2417.0
+	RX: 23567 bytes (293 packets)
+	TX: 910 bytes (10 packets)
+	signal: -43 dBm
+	tx bitrate: 11.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Connected to 02:00:00:00:05:00 (on sta3-wlan0)
+	SSID: ap0-ssid
+	freq: 2412.0
+	RX: 1337 bytes (29 packets)
+	TX: 310 bytes (4 packets)
+	signal: -54 dBm
+	tx bitrate: 2.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Not connected.
+mininet-wifi> sta3 iw dev sta3-wlan0 link
+Connected to 02:00:00:00:0a:00 (on sta3-wlan0)
+	SSID: ap5-ssid
+	freq: 2432.0
+	RX: 1601 bytes (35 packets)
+	TX: 310 bytes (4 packets)
+	signal: -62 dBm
+	tx bitrate: 2.0 MBit/s
+	bss flags: short-slot-time
+	dtim period: 2
+	beacon int: 100
+mininet-wifi> exit
+*** Deteniendo red
+*** Stopping 0 controllers
+
+*** Stopping 14 links
+..............
+*** Stopping switches/access points
+ap0 ap1 ap2 ap3 ap4 ap5 ap6 ap7 
+*** Stopping nodes
+sta1 sta2 sta3 sta4 sta5 
+
+*** Removing WiFi module and Configurations
+*** Killing mac80211_hwsim
+
+*** Done
+
